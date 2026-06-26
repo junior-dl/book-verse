@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar bg-primary text-primary-content shadow-sm">
+  <div class="navbar bg-base-300 shadow-sm">
     <div class="flex-1">
       <NuxtLink to="/" class="btn btn-ghost text-xl">
         BookVerse
@@ -12,6 +12,7 @@
       <!-- Button -->
 
       <div class="navbar-end">
+        <AppThemeToggle />
         <a class="btn">Sign In <Icon name="fa7-solid:arrow-right-to-bracket" size="20" /> </a>
       </div>
 
