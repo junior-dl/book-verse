@@ -13,7 +13,9 @@
 
       <div class="navbar-end">
         <AppThemeToggle />
-        <a class="btn">Sign In <Icon name="fa7-solid:arrow-right-to-bracket" size="20" /> </a>
+        <NuxtLink to="/sign-in" class="btn btn-primary">
+          Sign In <Icon name="fa7-solid:arrow-right-to-bracket" size="20" />
+        </NuxtLink>
       </div>
 
       <!-- Profile -->
