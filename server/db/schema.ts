@@ -26,7 +26,6 @@ export const profile = pgTable("profile", {
     .unique(),
   username: text().notNull().unique(),
   avatarUrl: text("avatar_url"),
-  googleId: text("google_id"),
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "string",
