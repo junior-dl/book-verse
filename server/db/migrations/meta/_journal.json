@@ -15,6 +15,13 @@
       "when": 1782568179211,
       "tag": "0001_silent_hex",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1782569804080,
+      "tag": "0002_handle-new-user-trigger",
+      "breakpoints": true
     }
   ]
 }
