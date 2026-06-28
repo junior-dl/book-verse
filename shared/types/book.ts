@@ -3,26 +3,30 @@ import type { Author } from "./author";
 export type Book = {
   id: string;
   title: string;
-  cover_url: string | null;
-  author: Author[];
+  coverUrl: string | null;
+  author: Author[] | string[];
   source: string;
-  external_book_id: string;
+  externalBookId: string;
+  sourceDownloadCount: number;
+  downloadCount: number;
   summary: string[];
   language: string[];
-  download_links?: BookDownloadLinks;
+  downloadLinks?: BookDownloadLinks;
   subjects?: string[];
-  updated_at: Date;
+  updatedAt: Date;
 };
 
 export type BookData = {
   title: string;
-  cover_url: string | null;
-  author: Author[];
+  coverUrl: string | null;
+  author: Author[] | string[];
   source: string;
-  external_book_id: string;
+  externalBookId: string;
+  sourceDownloadCount?: number;
+  downloadCount?: number;
   summary: string[];
   language: string[];
-  download_links?: BookDownloadLinks;
+  downloadLinks?: BookDownloadLinks;
   subjects?: string[];
 };
 

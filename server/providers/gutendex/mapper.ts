@@ -5,27 +5,29 @@ import type { GutendexBookResponse } from "./types";
 export function toBook(
   raw: GutendexBookResponse,
 ): BookData {
+  console.warn(raw);
   return {
-    external_book_id: String(raw.id),
+    externalBookId: raw.id?.toString?.() ?? null,
+    sourceDownloadCount: raw.download_count,
     source: "gutendex",
 
     title: raw.title,
 
     author: raw.authors.map(author => ({
       name: author.name,
-      birth_year: author.birth_year,
-      death_year: author.death_year,
+      birthYear: author.birth_year,
+      deathYear: author.death_year,
     })),
 
     summary: raw.summaries,
 
-    cover_url: raw.formats["image/jpeg"] ?? null,
+    coverUrl: raw.formats?.["image/jpeg"] || raw.formats?.["image/png"] || raw.formats?.["image/webp"] || null,
 
     language: raw.languages || ["en"],
 
     subjects: raw.subjects ?? [],
 
-    download_links: {
+    downloadLinks: {
       html: raw.formats["text/html"],
       epub: raw.formats["application/epub+zip"],
       mobi: raw.formats["application/x-mobipocket-ebook"],

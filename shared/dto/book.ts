@@ -3,13 +3,21 @@ import z from "zod";
 export const BookDTO = z.object ({
   id: z.string(),
   title: z.string(),
-  cover_url: z.string(),
-  author_name: z.string().array(),
+  coverUrl: z.string(),
+  author: z.json(),
   source: z.string(),
-  external_book_id: z.string(),
+  externalBookId: z.string(),
+  sourceDownloadCount: z.number(),
+  downloadCount: z.number(),
   summary: z.string().array(),
   language: z.string().array(),
-  download_links: z.string().array(),
+  downloadLinks: z.json(),
   subjects: z.string().array(),
-  updated_at: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
 });
+
+export const SearchBookDTOSchema = z.object ({
+  title: z.string(),
+});
+
+export type SearchBookDTO = z.infer<typeof SearchBookDTOSchema>;

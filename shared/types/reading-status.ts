@@ -1,7 +1,7 @@
 export type ReadingStatus = {
   id: string;
-  profile_id: string;
-  book_id: string;
+  profileId: string;
+  bookId: string;
   source: string;
-  created_at: string;
+  createdAt: string;
 };

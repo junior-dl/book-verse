@@ -2,19 +2,19 @@ import type { BookData } from "~/shared/types";
 
 import type { OpenLibraryAuthorResponse, OpenLibraryWorkResponse } from "./types";
 
-export function toBook(work: OpenLibraryWorkResponse, authors: OpenLibraryAuthorResponse[], coverUrl: string | null): BookData {
+export function toBook(work: OpenLibraryWorkResponse, authors: OpenLibraryAuthorResponse[], cover_url: string | null): BookData {
   return {
-    external_book_id: work.key,
+    externalBookId: work.key,
     source: "openlibrary",
 
     title: work.title,
 
     author: authors.map(author => ({
       name: author.name,
-      birth_year: author.birth_date
+      birthYear: author.birth_date
         ? Number(author.birth_date.match(/\d{4}/)?.[0] ?? null)
         : null,
-      death_year: author.death_date
+      deathYear: author.death_date
         ? Number(author.death_date.match(/\d{4}/)?.[0] ?? null)
         : null,
       bio: author.bio,
@@ -27,7 +27,7 @@ export function toBook(work: OpenLibraryWorkResponse, authors: OpenLibraryAuthor
           ? [work.description.value]
           : [],
 
-    cover_url: coverUrl,
+    coverUrl: cover_url,
 
     language:
       work.languages?.map(language =>
@@ -36,6 +36,6 @@ export function toBook(work: OpenLibraryWorkResponse, authors: OpenLibraryAuthor
 
     subjects: work.subjects ?? [],
 
-    download_links: undefined,
+    downloadLinks: undefined,
   };
 }

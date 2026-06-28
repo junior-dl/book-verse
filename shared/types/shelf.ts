@@ -1,9 +1,9 @@
 export type Shelf = {
   id: string;
-  profile_id: string;
+  profileId: string;
   name: string;
   description: string;
-  is_public: boolean;
-  created_at: string;
-  updated_at: string;
+  isPublic: boolean;
+  createdAt: string;
+  updatedAt: string;
 };

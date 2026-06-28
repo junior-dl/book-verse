@@ -1,8 +1,8 @@
 export type Profile = {
   id: string;
-  auth_user_id: string;
+  authUserId: string;
   username: string;
-  avatar_url: string;
-  created_at: Date;
-  updated_at: Date;
+  avatarUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
 };

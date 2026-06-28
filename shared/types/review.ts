@@ -1,10 +1,10 @@
 export type Review = {
   id: string;
-  profile_id: string;
-  book_id: string;
+  profileId: string;
+  bookId: string;
   source: string;
   rating: number;
-  review_text: string;
-  created_at: Date;
-  updated_at: Date;
+  reviewText: string;
+  createdAt: Date;
+  updatedAt: Date;
 };

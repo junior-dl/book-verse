@@ -1,4 +1,4 @@
-import { boolean, foreignKey, numeric, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, foreignKey, jsonb, numeric, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text().primaryKey(),
@@ -115,12 +115,14 @@ export const booksCache = pgTable("books_cache", {
   id: uuid().defaultRandom().primaryKey().notNull(),
   title: text(),
   coverUrl: text("cover_url"),
-  author: text("author").array(),
+  author: jsonb("author"),
   source: text(),
   externalBookId: text("external_book_id"),
+  sourceDownloadCount: numeric("source_download_count", { mode: "number" }),
+  downloadCount: numeric("download_count", { mode: "number" }).default(0),
   summary: text("summary").array(),
   language: text("language").array(),
-  downloadLinks: text("download_links").array(),
+  downloadLinks: jsonb("download_links"),
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).defaultNow(),
 });
 
