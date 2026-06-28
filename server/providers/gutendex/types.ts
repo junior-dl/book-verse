@@ -15,6 +15,7 @@ export type GutendexBookResponse = {
   media_type: string;
   formats: Record<string, string>;
   download_count: number;
+  subjects: string[];
 };
 
 export type GutendexSearchResponse = {

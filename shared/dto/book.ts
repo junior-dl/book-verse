@@ -10,5 +10,6 @@ export const BookDTO = z.object ({
   summary: z.string().array(),
   language: z.string().array(),
   download_links: z.string().array(),
+  subjects: z.string().array(),
   updated_at: z.iso.datetime(),
 });

@@ -23,6 +23,8 @@ export function toBook(
 
     language: raw.languages || ["en"],
 
+    subjects: raw.subjects ?? [],
+
     download_links: {
       html: raw.formats["text/html"],
       epub: raw.formats["application/epub+zip"],

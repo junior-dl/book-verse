@@ -10,6 +10,7 @@ export type Book = {
   summary: string[];
   language: string[];
   download_links?: BookDownloadLinks;
+  subjects?: string[];
   updated_at: Date;
 };
 
@@ -22,6 +23,7 @@ export type BookData = {
   summary: string[];
   language: string[];
   download_links?: BookDownloadLinks;
+  subjects?: string[];
 };
 
 // MIGRATION
