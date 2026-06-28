@@ -1,5 +1,5 @@
 export type Author = {
   name: string;
-  birth_date?: Date;
-  death_date?: Date;
+  birth_year: number | null; // TODO update in migration
+  death_year: number | null;
 };

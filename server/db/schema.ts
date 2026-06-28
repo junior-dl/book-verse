@@ -115,9 +115,12 @@ export const booksCache = pgTable("books_cache", {
   id: uuid().defaultRandom().primaryKey().notNull(),
   title: text(),
   coverUrl: text("cover_url"),
-  authorName: text("author_name").array(),
+  author: text("author").array(),
   source: text(),
   externalBookId: text("external_book_id"),
+  summary: text("summary").array(),
+  language: text("language").array(),
+  downloadLinks: text("download_links").array(),
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).defaultNow(),
 });
 

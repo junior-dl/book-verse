@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const BookDTO = z.object ({
+export const ReviewDTO = z.object ({
   id: z.uuid(),
   profile_id: z.string(),
   book_id: z.string(),
