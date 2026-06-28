@@ -18,9 +18,9 @@ async function request<T>(url: string): Promise<T> {
 };
 
 export const client = {
-  searchBooks(query: string) {
+  searchBooks(query: string, page = 1) {
     return request<GutendexSearchResponse>(
-      `/books?search=${encodeURIComponent(query)}`,
+      `/books?search=${encodeURIComponent(query)}&page=${page}`,
     );
   },
 

@@ -1,11 +1,12 @@
-// import { gutendexProvider } from "~/server/providers/gutendex/provider";
+import { getQuery } from "h3";
 
-// export default defineEventHandler(async () => {
-//   return await gutendexProvider.search("moby dick");
-// });
+import { gutendexProvider } from "~/server/providers/gutendex/provider";
 
-import { client } from "~/server/providers/gutendex/client";
+export default defineEventHandler(async (event) => {
+  const { q = "moby dick", page = "1" } = getQuery(event);
 
-export default defineEventHandler(async () => {
-  return await client.searchBooks("shakespeare");
+  return await gutendexProvider.search(
+    String(q),
+    Number(page),
+  );
 });
