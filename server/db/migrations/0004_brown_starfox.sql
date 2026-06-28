@@ -1,0 +1,1 @@
+ALTER TABLE "shelves" ALTER COLUMN "is_public" SET DEFAULT false;

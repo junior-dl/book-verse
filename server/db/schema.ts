@@ -69,7 +69,7 @@ export const shelves = pgTable("shelves", {
   profileId: uuid("profile_id"),
   name: text(),
   description: text(),
-  isPublic: boolean("is_public"),
+  isPublic: boolean("is_public").default(false),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).defaultNow(),
 }, table => [
@@ -115,7 +115,7 @@ export const booksCache = pgTable("books_cache", {
   id: uuid().defaultRandom().primaryKey().notNull(),
   title: text(),
   coverUrl: text("cover_url"),
-  authorName: text("author_name"),
+  authorName: text("author_name").array(),
   source: text(),
   externalBookId: text("external_book_id"),
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).defaultNow(),

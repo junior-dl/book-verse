@@ -22,6 +22,20 @@
       "when": 1782569804080,
       "tag": "0002_handle-new-user-trigger",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1782614728158,
+      "tag": "0003_wandering_sersi",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1782615877174,
+      "tag": "0004_brown_starfox",
+      "breakpoints": true
     }
   ]
 }
