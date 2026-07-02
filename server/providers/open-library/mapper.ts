@@ -1,9 +1,10 @@
-import type { BookData } from "~/shared/types";
+import type { Book } from "~/shared/types";
 
 import type { OpenLibraryAuthorResponse, OpenLibraryWorkResponse } from "./types";
 
-export function toBook(work: OpenLibraryWorkResponse, authors: OpenLibraryAuthorResponse[], cover_url: string | null): BookData {
+export function toBook(work: OpenLibraryWorkResponse, authors: OpenLibraryAuthorResponse[], cover_url: string | null): Book {
   return {
+
     externalBookId: work.key,
     source: "openlibrary",
 

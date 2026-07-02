@@ -12,13 +12,14 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxtjs/color-mode",
     "@pinia/nuxt",
+    "vue3-carousel-nuxt",
   ],
   eslint: {
     config: {
       standalone: false,
     },
   },
-  css: ["~/assets/css/main.css"],
+  css: ["~/assets/css/main.css", "~/assets/css/carousel.css", "vue3-carousel/carousel.css"],
   vite: {
     plugins: [
       tailwindcss(),

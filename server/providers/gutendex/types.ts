@@ -24,3 +24,10 @@ export type GutendexSearchResponse = {
   previous: string | null;
   results: GutendexBookResponse[];
 };
+
+export type GetOptions = {
+  subject?: string;
+  limit?: number;
+  random?: boolean;
+  page?: number;
+};

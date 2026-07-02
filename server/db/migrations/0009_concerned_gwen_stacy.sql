@@ -1,0 +1,1 @@
+ALTER TABLE "books_cache" ADD COLUMN "subjects" jsonb;

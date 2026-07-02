@@ -29,4 +29,20 @@ export const client = {
       `/books/${id}`,
     );
   },
+
+  getBooks(params?: {
+    subject?: string;
+    page?: number;
+  }) {
+    const search = new URLSearchParams();
+
+    if (params?.subject)
+      search.set("subject", params?.subject);
+    if (params?.page)
+      search.set("page", String(params?.page));
+
+    return request<GutendexSearchResponse>(
+      `/books?${search.toString()}`,
+    );
+  },
 };

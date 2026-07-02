@@ -1,22 +1,7 @@
 import type { Author } from "./author";
 
 export type Book = {
-  id: string;
-  title: string;
-  coverUrl: string | null;
-  author: Author[] | string[];
-  source: string;
-  externalBookId: string;
-  sourceDownloadCount: number;
-  downloadCount: number;
-  summary: string[];
-  language: string[];
-  downloadLinks?: BookDownloadLinks;
-  subjects?: string[];
-  updatedAt: Date;
-};
-
-export type BookData = {
+  id?: string;
   title: string;
   coverUrl: string | null;
   author: Author[] | string[];
@@ -28,9 +13,13 @@ export type BookData = {
   language: string[];
   downloadLinks?: BookDownloadLinks;
   subjects?: string[];
+  updatedAt?: Date;
 };
 
-// MIGRATION
+export type HomepageBook = Book & {
+  rating: number;
+};
+
 export type BookDownloadLinks = {
   html?: string;
   epub?: string;

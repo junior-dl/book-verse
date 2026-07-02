@@ -1,6 +1,16 @@
 <script lang="ts" setup>
-const books = await $fetch("/api/books/search", {
-  query: { q: "moby" },
+// const books = await $fetch("/api/books/", {
+//   method: "GET",
+//   query: {
+//     limit: 5,
+//   },
+// });
+
+const bookStore = useBookStore();
+const featured = computed(() => bookStore.featuredBooks);
+
+onMounted(async () => {
+  await bookStore.fetchFeaturedBooks();
 });
 </script>
 
@@ -14,7 +24,7 @@ const books = await $fetch("/api/books/search", {
     </div> -->
 
     <ul>
-      <li v-for="book in books?.data" :key="book.id">
+      <li v-for="book in featured " :key="book.id">
         {{ book.title }}
       </li>
     </ul>

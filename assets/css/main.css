@@ -4,3 +4,27 @@
     light --default,
     dark --prefersdark;
 }
+
+:root {
+  /* Fonts */
+  --header-font: "Cormorant Garamond", serif;
+  --body-font: "Inter", serif;
+  --title-font: "Cinzel", serif;
+
+  /* cards , navigaton , etc */
+  --surface-color: #1e293b;
+  --surface-hover: #334155;
+  --secondary-surface: #2e353e;
+
+  /* logo, active nav item, main buttons, links, selected states, icons */
+  --primary-color: #bfa15a;
+  /* hover states, button hover, underlines, decorative elements, ratings, special badges */
+  --accent-color: #d6bc72;
+
+  /* Text Color */
+  --text-color: #f8fafc;
+  --muted-text-color: #94a3b8;
+
+  --success-color: #22c55e;
+  --error-color: #ef4444;
+}

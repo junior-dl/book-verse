@@ -1,10 +1,10 @@
-import type { BookData } from "~/shared/types";
+import type { Book } from "~/shared/types";
 
 import type { GutendexBookResponse } from "./types";
 
 export function toBook(
   raw: GutendexBookResponse,
-): BookData {
+): Book {
   console.warn(raw);
   return {
     externalBookId: raw.id?.toString?.() ?? null,

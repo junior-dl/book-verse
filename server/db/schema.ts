@@ -123,7 +123,8 @@ export const booksCache = pgTable("books_cache", {
   summary: text("summary").array(),
   language: text("language").array(),
   downloadLinks: jsonb("download_links"),
-  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).defaultNow(),
+  subjects: jsonb("subjects"),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
 
 export const session = pgTable("session", {

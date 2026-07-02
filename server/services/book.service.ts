@@ -31,6 +31,33 @@ async function searchBooks(query: string) {
   };
 }
 
+async function getBooks(books_limit?: number, randomized = true) {
+  const result = await gutendexProvider.getBooks({
+    limit: books_limit,
+    random: randomized,
+  });
+
+  return {
+    source: "provider",
+    data: result.books,
+  };
+}
+
+async function getBooksBySubject(books_subject?: string, books_limit?: number, randomized = true) {
+  const result = await gutendexProvider.getBooks({
+    subject: books_subject,
+    limit: books_limit,
+    random: randomized,
+  });
+
+  return {
+    source: "provider",
+    data: result.books,
+  };
+}
+
 export const bookService = {
   searchBooks,
+  getBooks,
+  getBooksBySubject,
 };
