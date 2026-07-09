@@ -4,6 +4,7 @@ export const useBookStore = defineStore("books", () => {
   const featuredBooks = ref<Book[]>([]);
   const subjectBooks = ref<Record<string, Book[]>>({});
   const searchedBooks = ref<Book[]>([]);
+  const searchLoading = ref(false);
   const isLoading = ref(false);
 
   const subjects = [
@@ -64,6 +65,7 @@ export const useBookStore = defineStore("books", () => {
   };
 
   const searchBook = async (query: string) => {
+    searchLoading.value = true;
     try {
       const response = await $fetch<{
         source: string;
@@ -79,7 +81,7 @@ export const useBookStore = defineStore("books", () => {
       return searchedBooks.value;
     }
     finally {
-      isLoading.value = false;
+      searchLoading.value = false;
     }
   };
 
@@ -88,6 +90,7 @@ export const useBookStore = defineStore("books", () => {
     subjectBooks,
     searchedBooks,
     subjects,
+    searchLoading,
     fetchFeaturedBooks,
     fetchSubjectBooks,
     searchBook,

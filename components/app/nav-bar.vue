@@ -1,6 +1,15 @@
 <script setup lang="ts">
 const authStore = useAuthStore();
+
 const displayName = computed(() => authStore.user ? authStore.user.name.split(" ", 1)[0] : "");
+
+const q = ref("");
+
+const router = useRouter();
+
+function search() {
+  router.push(`/search/${q.value}`);
+}
 </script>
 
 <template>
@@ -12,7 +21,7 @@ const displayName = computed(() => authStore.user ? authStore.user.name.split(" 
     </div>
     <div class="flex gap-2 items-center">
       <!-- Search Bar -->
-      <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto">
+      <input v-model="q" type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" @keyup.enter="search">
 
       <!-- Button -->
 
