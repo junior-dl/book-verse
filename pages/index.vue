@@ -7,7 +7,9 @@ const bookStore = useBookStore();
 const subjects: string[] = bookStore.subjects;
 
 const featuredBooks = computed(() => bookStore.featuredBooks);
+const featuredLoading = computed(() => bookStore.featuredLoading);
 const subjectBooks = computed(() => bookStore.subjectBooks);
+const subjectBooksLoading = computed(() => bookStore.subjectBookLoading);
 
 onMounted(async () => {
   await bookStore.fetchFeaturedBooks();
@@ -17,8 +19,8 @@ onMounted(async () => {
 
 <template>
   <div>
-    <HomeTrendingBooksCarousel :books="featuredBooks" :default-cover="DEFAULT_BOOK_COVER" />
+    <HomeTrendingBooksCarousel :books="featuredBooks" :default-cover="DEFAULT_BOOK_COVER" :loading="featuredLoading" />
 
-    <HomeCategoryBooksListContent :subjects="subjects" :books="subjectBooks" :default-cover="DEFAULT_BOOK_COVER" />
+    <HomeCategoryBooksListContent :subjects="subjects" :books="subjectBooks" :default-cover="DEFAULT_BOOK_COVER" :loading="subjectBooksLoading" />
   </div>
 </template>

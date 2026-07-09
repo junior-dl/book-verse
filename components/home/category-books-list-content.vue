@@ -4,23 +4,50 @@ import type { Book } from "#imports";
 const props = defineProps<{
   subjects: string[];
   books: Record<string, Book[]>;
+  loading?: boolean;
   defaultCover: string;
 }>();
 </script>
 
 <template>
   <div class="mx-4">
+    <div v-if="loading">
+      <div
+        v-for="subj in props.subjects"
+        :key="subj"
+        class="mb-8"
+      >
+        <!-- Subject Name -->
+        <h2 class="text-4xl font-bold my-5">
+          {{ subj }}
+        </h2>
+        <!-- Loading -->
+        <div class="grid grid-cols-1 gap-8 sm:grid-cols-1 lg:grid-cols-6">
+          <div
+            v-for="i in 12"
+            :key="i"
+            class="flex flex-col gap-4"
+          >
+            <div class="skeleton h-100 w-full" />
+            <div class="skeleton h-8 w-full" />
+            <div class="skeleton h-8 w-28" />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div
       v-for="subject in props.subjects"
+      v-else
       :key="subject"
       class="mb-8"
     >
+      <!-- Subject Name -->
       <h2 class="text-4xl font-bold my-5">
         {{ subject }}
       </h2>
 
-      <!-- Books Under the subject -->
-      <div class="flex md:flex-row flex-col gap-4 flex-wrap">
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-1 lg:grid-cols-6">
         <div v-for="book in props.books[subject]" :key="book.id" class="flex-1">
           <div class="card bg-base-100 w-auto shadow-sm">
             <!-- Image -->

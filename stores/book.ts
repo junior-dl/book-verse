@@ -2,10 +2,11 @@ import type { Book } from "#imports";
 
 export const useBookStore = defineStore("books", () => {
   const featuredBooks = ref<Book[]>([]);
+  const featuredLoading = ref(false);
   const subjectBooks = ref<Record<string, Book[]>>({});
+  const subjectBookLoading = ref(false);
   const searchedBooks = ref<Book[]>([]);
   const searchLoading = ref(false);
-  const isLoading = ref(false);
 
   const subjects = [
     "Action",
@@ -17,6 +18,7 @@ export const useBookStore = defineStore("books", () => {
   ];
 
   const fetchFeaturedBooks = async () => {
+    featuredLoading.value = true;
     try {
       const books = await $fetch<{
         source: string;
@@ -35,11 +37,12 @@ export const useBookStore = defineStore("books", () => {
       return featuredBooks.value;
     }
     finally {
-      isLoading.value = false;
+      featuredLoading.value = false;
     }
   };
 
   const fetchSubjectBooks = async (subject: string) => {
+    subjectBookLoading.value = true;
     try {
       const books = await $fetch<{
         source: string;
@@ -48,7 +51,7 @@ export const useBookStore = defineStore("books", () => {
         method: "GET",
         query: {
           subject,
-          limit: 5,
+          limit: 6,
           randomized: true,
         },
       });
@@ -60,7 +63,7 @@ export const useBookStore = defineStore("books", () => {
       return subjectBooks.value;
     }
     finally {
-      isLoading.value = false;
+      subjectBookLoading.value = false;
     }
   };
 
@@ -90,6 +93,8 @@ export const useBookStore = defineStore("books", () => {
     subjectBooks,
     searchedBooks,
     subjects,
+    featuredLoading,
+    subjectBookLoading,
     searchLoading,
     fetchFeaturedBooks,
     fetchSubjectBooks,
