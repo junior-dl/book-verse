@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Book } from "#imports";
+import type { Book } from "~/shared/types";
 
 const props = defineProps<{
   subjects: string[];
@@ -7,6 +7,16 @@ const props = defineProps<{
   loading?: boolean;
   defaultCover: string;
 }>();
+const BookStore = useBookStore();
+const MAX_DISPLAYED_BOOKS = BookStore.HOMEPAGE_MAX_BOOKS;
+
+const router = useRouter();
+
+function openBook(bookId?: string) {
+  if (!bookId)
+    return;
+  router.push(`/book/${bookId}`);
+}
 </script>
 
 <template>
@@ -48,7 +58,7 @@ const props = defineProps<{
       </h2>
 
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-1 lg:grid-cols-6">
-        <div v-for="book in props.books[subject]" :key="book.id" class="flex-1">
+        <div v-for="book in props.books[subject]?.slice(0, MAX_DISPLAYED_BOOKS)" :key="book.id" class="flex-1">
           <div class="card bg-base-100 w-auto shadow-sm">
             <!-- Image -->
             <figure class="h-80 overflow-hidden">
@@ -74,7 +84,7 @@ const props = defineProps<{
 
               <!-- Button -->
               <div class="card-actions">
-                <button class="btn btn-primary w-full">
+                <button class="btn btn-primary w-full" @click="openBook(book.id)">
                   Read Now
                 </button>
               </div>

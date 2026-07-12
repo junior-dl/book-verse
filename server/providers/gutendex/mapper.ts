@@ -5,7 +5,7 @@ import type { GutendexBookResponse } from "./types";
 export function toBook(
   raw: GutendexBookResponse,
 ): Book {
-  console.warn(raw);
+  // console.warn(raw);
   return {
     externalBookId: raw.id?.toString?.() ?? null,
     sourceDownloadCount: raw.download_count,

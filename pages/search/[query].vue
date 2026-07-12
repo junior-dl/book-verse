@@ -19,6 +19,13 @@ const paginatedBooks = computed(() => {
   return books.value.slice(start, start + booksPerPage);
 });
 
+const router = useRouter();
+function openBook(bookId?: string) {
+  if (!bookId)
+    return;
+  router.push(`/book/${bookId}`);
+}
+
 onMounted(async () => {
   await bookStore.searchBook(query.value);
 });
@@ -51,18 +58,19 @@ onMounted(async () => {
     <div v-else-if="books[0]?.title">
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-6">
         <div v-for="book in paginatedBooks" :key="book.id">
-          <div class="min-h-100">
-            <img :src="book?.coverUrl ?? DEFAULT_BOOK_COVER" alt="" srcset="" class="h-100 w-full">
-          </div>
-          <div class="line-clamp-1">
-            {{ book.title }}
-          </div>
-          <div v-for="(author, index) in book.author" :key="index">
-            {{ typeof author === 'string' ? author : author.name }}<span v-if="index < book.author.length - 1"> , </span>
-          </div>
+          <button @click="openBook(book.id)">
+            <div class="min-h-100">
+              <img :src="book?.coverUrl ?? DEFAULT_BOOK_COVER" alt="" srcset="" class="h-100 w-full">
+            </div>
+            <div class="line-clamp-1">
+              {{ book.title }}
+            </div>
+            <div v-for="(author, index) in book.author" :key="index">
+              {{ typeof author === 'string' ? author : author.name }}<span v-if="index < book.author.length - 1"> , </span>
+            </div>
+          </button>
         </div>
       </div>
-
       <!-- Pagination -->
       <div class="contain flex justify-center pt-10">
         <div class="join">

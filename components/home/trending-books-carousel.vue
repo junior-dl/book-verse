@@ -7,17 +7,25 @@ const props = defineProps <{
   loading?: boolean;
 }>();
 
+const router = useRouter();
+
 const carouselConfig = {
   itemsToShow: 1,
   wrapAround: true,
 };
+
+function openBook(bookId?: string) {
+  if (!bookId)
+    return;
+  router.push(`/book/${bookId}`);
+}
 </script>
 
 <template>
   <div>
     <div class="carousel-bg px-2 py-2">
       <!-- Loading -->
-      <div class="flex mx-10 flex-row gap-4" v-if="loading">
+      <div v-if="loading" class="flex mx-10 flex-row gap-4">
         <div class="skeleton w-65 h-80" />
         <div class="flex w-full flex-col gap-4">
           <div class="skeleton h-10 w-1/2" />
@@ -28,7 +36,7 @@ const carouselConfig = {
       </div>
 
       <!-- Carousel -->
-      <Carousel :autoplay="2500" v-bind="carouselConfig" class="w-full" v-else>
+      <Carousel v-else :autoplay="2500" v-bind="carouselConfig" class="w-full">
         <Slide v-for="book in props.books" :key="book.id" class="w-full py-8 px-10">
           <div class="flex flex-row gap-5 w-full">
             <!-- Image -->
@@ -38,18 +46,34 @@ const carouselConfig = {
                 class="w-full h-full object-contain"
               >
             </div>
-            <!-- Info -->
-            <div class="w-full flex flex-col gap-5">
-              <h2 class="text-4xl font-bold">
-                {{ book.title }}
-              </h2>
-              <div>
-                <p class="line-clamp-2">
-                  {{ book.summary[0] }}
-                </p>
+            <!-- Left -->
+            <div class="w-full flex flex-col gap-10">
+              <!-- Info -->
+
+              <div class="flex flex-col gap-5">
+                <div>
+                  <p class="text-secondary-content text-sm">
+                    TRENDING
+                  </p>
+                  <h2 class="text-4xl font-bold">
+                    {{ book.title }}
+                  </h2>
+                </div>
+                <div>
+                  <p class="line-clamp-2">
+                    {{ book.summary[0] }}
+                  </p>
+                </div>
+                <div v-for="(author, index) in book.author" :key="index">
+                  {{ typeof author === 'string' ? author : author.name }}<span v-if="index < book.author.length - 1"> , </span>
+                </div>
               </div>
-              <div v-for="(author, index) in book.author" :key="index">
-                {{ typeof author === 'string' ? author : author.name }}<span v-if="index < book.author.length - 1"> , </span>
+
+              <!-- Action Button -->
+              <div class="card-actions">
+                <button class="btn btn-primary w-50" @click="openBook(book.id)">
+                  Read Now
+                </button>
               </div>
             </div>
           </div>

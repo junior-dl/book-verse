@@ -46,6 +46,9 @@ export const gutendexProvider = {
     return this.search(author, page);
   },
 
+  async searchBySubject(subject: string, page = 1) {
+    return this.search(subject, page);
+  },
   async getBook(id: number) {
     const response = await client.getBook(id);
 

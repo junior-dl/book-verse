@@ -7,6 +7,9 @@ export const useBookStore = defineStore("books", () => {
   const subjectBookLoading = ref(false);
   const searchedBooks = ref<Book[]>([]);
   const searchLoading = ref(false);
+  const bookDetails = ref<Book>();
+  const bookDetailsLoading = ref(false);
+  const HOMEPAGE_MAX_BOOKS = 6;
 
   const subjects = [
     "Action",
@@ -23,10 +26,10 @@ export const useBookStore = defineStore("books", () => {
       const books = await $fetch<{
         source: string;
         data: Book[];
-      }>("api/books", {
+      }>("api/book", {
         method: "GET",
         query: {
-          limit: 5,
+          limit: HOMEPAGE_MAX_BOOKS - 1,
         },
       });
       featuredBooks.value = books.data;
@@ -47,11 +50,11 @@ export const useBookStore = defineStore("books", () => {
       const books = await $fetch<{
         source: string;
         data: Book[];
-      }>("/api/books/subject", {
+      }>("/api/book/subject", {
         method: "GET",
         query: {
           subject,
-          limit: 6,
+          limit: HOMEPAGE_MAX_BOOKS,
           randomized: true,
         },
       });
@@ -73,7 +76,7 @@ export const useBookStore = defineStore("books", () => {
       const response = await $fetch<{
         source: string;
         data: Book[];
-      }>("/api/books/search", {
+      }>("/api/book/search", {
         query: { q: query },
       });
       searchedBooks.value = response?.data;
@@ -81,10 +84,32 @@ export const useBookStore = defineStore("books", () => {
     }
     catch (e) {
       console.error("Failed to fetch books for ", query, ": ", e);
-      return searchedBooks.value;
     }
     finally {
       searchLoading.value = false;
+    }
+  };
+
+  const getBookDetails = async (id: string) => {
+    bookDetailsLoading.value = true;
+
+    try {
+      const response = await $fetch<{
+        source: string;
+        data: Book;
+      }>(`/api/book/${id}`, {
+        method: "GET",
+      });
+
+      bookDetails.value = response?.data;
+      return response;
+    }
+    catch (e) {
+      console.error("Failed to fetch book details for book id: ", id, " : ", e);
+      return bookDetails.value;
+    }
+    finally {
+      bookDetailsLoading.value = false;
     }
   };
 
@@ -92,12 +117,16 @@ export const useBookStore = defineStore("books", () => {
     featuredBooks,
     subjectBooks,
     searchedBooks,
+    bookDetails,
     subjects,
     featuredLoading,
     subjectBookLoading,
     searchLoading,
+    bookDetailsLoading,
+    HOMEPAGE_MAX_BOOKS,
     fetchFeaturedBooks,
     fetchSubjectBooks,
     searchBook,
+    getBookDetails,
   };
 });
