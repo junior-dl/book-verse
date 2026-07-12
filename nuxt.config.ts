@@ -10,7 +10,6 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/eslint",
     "@nuxt/icon",
-    "@nuxtjs/color-mode",
     "@pinia/nuxt",
     "vue3-carousel-nuxt",
   ],
@@ -27,5 +26,6 @@ export default defineNuxtConfig({
   },
   colorMode: {
     dataValue: "theme",
+    fallback: "autumn",
   },
 });

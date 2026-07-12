@@ -4,12 +4,55 @@ const authClient = createAuthClient();
 
 export const useAuthStore = defineStore("useAuthStore", () => {
   const session = authClient.useSession();
-  const user = computed(() => session.value.data?.user);
-  const force_load = ref(false);
-  const loading = computed(() => session.value.isPending || session.value.isRefetching || force_load.value);
+  const initialized = computed(() => !session.value.isPending);
+  const loading = ref(false);
+  const user = computed(() => session.value.data?.user ?? null);
+
+  async function refreshSession() {
+    await session.value.refetch();
+  }
+
+  async function signUpWithEmail(
+    name: string,
+    email: string,
+    password: string,
+  ) {
+    loading.value = true;
+    try {
+      await authClient.signUp.email({
+        name,
+        email,
+        password,
+      });
+      await refreshSession();
+      await navigateTo("/dashboard");
+    }
+    finally {
+      loading.value = false;
+    }
+  }
+
+  async function signInWithEmail(
+    email: string,
+    password: string,
+  ) {
+    loading.value = true;
+    try {
+      await authClient.signIn.email({
+        email,
+        password,
+        rememberMe: true, // optional
+      });
+      await refreshSession();
+      await navigateTo("/dashboard");
+    }
+    finally {
+      loading.value = false;
+    }
+  }
 
   async function signInWithGoogle() {
-    force_load.value = true;
+    loading.value = true;
     try {
       await authClient.signIn.social({
         provider: "google",
@@ -18,18 +61,29 @@ export const useAuthStore = defineStore("useAuthStore", () => {
       });
     }
     finally {
-      force_load.value = false;
+      loading.value = false;
     }
   }
 
   async function signOut() {
-    await authClient.signOut();
-    navigateTo("/");
+    loading.value = true;
+    try {
+      await authClient.signOut();
+      await refreshSession();
+      await navigateTo("/");
+    }
+    finally {
+      loading.value = false;
+    }
   }
 
   return {
+    initialized,
     loading,
     user,
+    refreshSession,
+    signUpWithEmail,
+    signInWithEmail,
     signInWithGoogle,
     signOut,
   };

@@ -1,13 +1,10 @@
 <script setup lang="ts">
-const colorMode = useColorMode();
+const { theme, applyTheme } = useTheme();
 
 const isDark = computed({
-  get() {
-    return colorMode.value === "dark";
-  },
-
-  set(value) {
-    colorMode.preference = value ? "dark" : "light";
+  get: () => theme.value === "luxury",
+  set: (value) => {
+    applyTheme(value ? "luxury" : "autumn");
   },
 });
 </script>
