@@ -1,13 +1,8 @@
 <script lang="ts" setup>
-// const books = await $fetch("/api/books/", {
-//   method: "GET",
-//   query: {
-//     limit: 5,
-//   },
-// });
-
 const bookStore = useBookStore();
+const authStore = useAuthStore();
 const featured = computed(() => bookStore.featuredBooks);
+const user = computed(() => authStore.user);
 
 onMounted(async () => {
   await bookStore.fetchFeaturedBooks();
@@ -16,13 +11,7 @@ onMounted(async () => {
 
 <template>
   <div>
-    <!-- <div v-if="pending">
-      Loading...
-    </div>
-    <div v-else-if="error">
-      Error loading books
-    </div> -->
-
+    {{ user }}
     <ul>
       <li v-for="book in featured " :key="book.id">
         {{ book.title }}

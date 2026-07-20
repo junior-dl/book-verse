@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui" {
   themes:
-    autumn --default,
+    bumblebee --default,
     luxury --prefersdark;
 }
 
@@ -31,4 +31,5 @@
 
 html {
   overflow-y: scroll;
+  scrollbar-width: thin; /* auto | thin | none */
 }

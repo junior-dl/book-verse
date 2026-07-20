@@ -24,8 +24,4 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
-  colorMode: {
-    dataValue: "theme",
-    fallback: "autumn",
-  },
 });

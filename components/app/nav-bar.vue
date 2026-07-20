@@ -46,6 +46,11 @@ function search() {
           </div>
           <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-5 w-52 p-2 shadow-sm">
             <li>
+              <NuxtLink to="/profile">
+                <Icon name="tabler:user-circle" size="20" /> Profile
+              </NuxtLink>
+            </li>
+            <li>
               <NuxtLink to="/sign-out">
                 <Icon name="tabler:logout" size="20" /> Sign Out
               </NuxtLink>

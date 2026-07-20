@@ -4,7 +4,7 @@ const { theme, applyTheme } = useTheme();
 const isDark = computed({
   get: () => theme.value === "luxury",
   set: (value) => {
-    applyTheme(value ? "luxury" : "autumn");
+    applyTheme(value ? "luxury" : "bumblebee");
   },
 });
 </script>

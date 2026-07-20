@@ -29,7 +29,7 @@ const props = defineProps<{
         <div v-if="props.authors" class="flex flex-row items-center">
           <span>by</span>
           <div v-for="(author, index) in props?.authors" :key="index">
-            <button class="btn btn-link text-primary-content">
+            <button class="btn btn-link text-secondary-content">
               {{ typeof author === 'string' ? author : author.name }}
             </button>
             <span v-if="index < props.authors.length - 1"> , </span>
@@ -39,15 +39,15 @@ const props = defineProps<{
 
       <!-- Buttons -->
       <div class="card-actions justify-start">
-        <a v-if="props.downloadLinks?.html" class="btn btn-primary" :href="props.downloadLinks?.html" target="_blank" rel="noopener noreferrer">
+        <a v-if="props.downloadLinks?.html" class="btn" :href="props.downloadLinks?.html" target="_blank" rel="noopener noreferrer">
           Read Online
         </a>
-        <a v-if="props.downloadLinks?.text" class="btn btn-primary" :href="props.downloadLinks?.text" target="_blank" rel="noopener noreferrer">
+        <a v-if="props.downloadLinks?.text" class="btn" :href="props.downloadLinks?.text" target="_blank" rel="noopener noreferrer">
           Read as Plain Text
         </a>
 
         <div class="dropdown dropdown-hover">
-          <div tabindex="0" role="button" class="btn btn-primary">
+          <div tabindex="0" role="button" class="btn">
             Download
           </div>
           <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
@@ -55,7 +55,7 @@ const props = defineProps<{
             <li><a v-if="props.downloadLinks?.mobi" :href="props.downloadLinks?.mobi" target="_blank" rel="noopener noreferrer">Download MOBI</a></li>
           </ul>
         </div>
-        <button class="btn btn-secondary">
+        <button class="btn btn-accent">
           <Icon name="tabler:heart" size="24" />
           Save
         </button>

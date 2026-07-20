@@ -1,7 +1,7 @@
 export function useTheme() {
-  const theme = useState<"autumn" | "luxury">("theme", () => "autumn");
+  const theme = useState<"bumblebee" | "luxury">("theme", () => "bumblebee");
 
-  const applyTheme = (value: "autumn" | "luxury") => {
+  const applyTheme = (value: "bumblebee" | "luxury") => {
     theme.value = value;
 
     if (import.meta.client) {
@@ -12,11 +12,11 @@ export function useTheme() {
 
   onMounted(() => {
     const saved = localStorage.getItem("theme") as
-      | "autumn"
+      | "bumblebee"
       | "luxury"
       | null;
 
-    applyTheme(saved ?? "autumn");
+    applyTheme(saved ?? "bumblebee");
   });
 
   return {

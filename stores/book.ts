@@ -12,10 +12,10 @@ export const useBookStore = defineStore("books", () => {
   const HOMEPAGE_MAX_BOOKS = 6;
 
   const subjects = [
-    "Action",
+    "Adventure",
     "Fantasy",
     "Fiction",
-    "Romance",
+    "Love",
     "Mystery",
     "Science Fiction",
   ];

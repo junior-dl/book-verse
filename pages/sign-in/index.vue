@@ -6,7 +6,7 @@ const password = ref("");
 
 async function submit() {
   await authStore.signInWithEmail(email.value, password.value);
-  await navigateTo("/dashboard");
+  await navigateTo("/profile");
 }
 </script>
 

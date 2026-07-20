@@ -25,7 +25,7 @@ export const useAuthStore = defineStore("useAuthStore", () => {
         password,
       });
       await refreshSession();
-      await navigateTo("/dashboard");
+      await navigateTo("/");
     }
     finally {
       loading.value = false;
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore("useAuthStore", () => {
         rememberMe: true, // optional
       });
       await refreshSession();
-      await navigateTo("/dashboard");
+      await navigateTo("/");
     }
     finally {
       loading.value = false;
@@ -56,7 +56,7 @@ export const useAuthStore = defineStore("useAuthStore", () => {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/dashboard",
+        callbackURL: "/",
         errorCallbackURL: "/error",
       });
     }

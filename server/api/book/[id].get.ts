@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     return await getBookByIdUseCase(bookId);
   }
   catch (e) {
-    console.error("Error at API endpoing: ", e);
+    console.error("Error at API endpoint: ", e);
     throw createError({
       statusCode: 500,
       statusMessage: "Internal server error",

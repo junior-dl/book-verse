@@ -34,7 +34,7 @@ function openBook(bookId?: string) {
         <!-- Loading -->
         <div class="grid grid-cols-1 gap-8 sm:grid-cols-1 lg:grid-cols-6">
           <div
-            v-for="i in 12"
+            v-for="i in 6"
             :key="i"
             class="flex flex-col gap-4"
           >

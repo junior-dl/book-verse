@@ -24,15 +24,17 @@ export const profile = pgTable("profile", {
       onDelete: "cascade",
     })
     .unique(),
-  username: text().notNull().unique(),
+  name: text("name"),
+  email: text("email"),
+  username: text().unique("profile_username_unique"),
   avatarUrl: text("avatar_url"),
+  about: text("about"),
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "string",
   }).defaultNow(),
   updatedAt: timestamp("updated_at", {
     withTimezone: true,
-    mode: "string",
   }).defaultNow(),
 });
 
@@ -101,8 +103,14 @@ export const reviews = pgTable("reviews", {
   source: text(),
   rating: numeric(),
   reviewText: text("review_text"),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).defaultNow(),
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+    mode: "string",
+  }).defaultNow(),
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "string",
+  }).defaultNow(),
 }, table => [
   foreignKey({
     columns: [table.profileId],
@@ -115,7 +123,7 @@ export const booksCache = pgTable("books_cache", {
   id: uuid().defaultRandom().primaryKey().notNull(),
   title: text(),
   coverUrl: text("cover_url"),
-  author: jsonb("author"),
+  author: jsonb(),
   source: text(),
   externalBookId: text("external_book_id"),
   sourceDownloadCount: numeric("source_download_count", { mode: "number" }),
@@ -123,8 +131,10 @@ export const booksCache = pgTable("books_cache", {
   summary: text("summary").array(),
   language: text("language").array(),
   downloadLinks: jsonb("download_links"),
-  subjects: jsonb("subjects"),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  subjects: jsonb(),
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+  }).defaultNow(),
 });
 
 export const session = pgTable("session", {
