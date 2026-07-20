@@ -18,7 +18,7 @@ onMounted(async () => {
 <template>
   <div>
     <!-- Section 1 -->
-    <BookCardDetailsHeroSection :id="bookId" :title="book?.title" :authors="book?.author" :cover-url="book?.coverUrl ?? DEFAULT_BOOK_COVER" :download-links="book?.downloadLinks" />
+    <BookCardDetailsHeroSection :id="bookId" :title="book?.title" :authors="book?.author" :cover-url="book?.coverUrl ?? DEFAULT_BOOK_COVER" :download-links="book?.downloadLinks" :source="book?.source" />
 
     <BookCardDetailsAboutSection :summary="book?.summary" />
 

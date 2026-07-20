@@ -1,4 +1,4 @@
-import { eq, ilike, sql } from "drizzle-orm";
+import { eq, ilike, inArray, sql } from "drizzle-orm";
 
 import db from "../db";
 import { booksCache } from "../db/schema";
@@ -141,9 +141,22 @@ async function getBookById(id: string) {
   };
 }
 
+async function getBooksById(ids: string[]) {
+  const result = await db
+    .select()
+    .from(booksCache)
+    .where(inArray(booksCache.id, ids));
+
+  return {
+    source: "cache",
+    data: result,
+  };
+}
+
 export const bookService = {
   searchBooks,
   getBooks,
   getBooksBySubject,
   getBookById,
+  getBooksById,
 };

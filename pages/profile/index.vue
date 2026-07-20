@@ -22,7 +22,7 @@ watch(
   <div class="max-w-500 mx-auto">
     <ProfileCardDetailsProfileHeaderSection :name="user?.name" :avatar="profile?.avatarUrl" :email="user?.email" :username="profile?.username" :about="profile?.about" :joined-date="profile?.createdAt" :profile="profile" />
 
-    <ProfileCardDetailsFavoriteBooksSection />
+    <ProfileCardDetailsFavoriteBooksSection :profile-id="profile?.id ?? ''" />
 
     <ProfileCardDetailsShelfSection />
   </div>

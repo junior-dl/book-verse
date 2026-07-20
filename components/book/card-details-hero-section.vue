@@ -7,7 +7,52 @@ const props = defineProps<{
   title?: string;
   authors?: (string | Author)[];
   downloadLinks?: BookDownloadLinks;
+  source?: string;
 }>();
+
+const favoritesStore = useFavoritesStore();
+const profileStore = useProfileStore();
+const authStore = useAuthStore();
+
+const profile = computed(() => profileStore.profileDetails);
+const isFavorite = computed(() => favoritesStore.isFavorite);
+const loading = computed(() => favoritesStore.loading);
+
+const profileId = computed(() => profile.value?.id);
+
+async function handleFavorite() {
+  const data = { profileId: profileId.value ?? "", bookId: props.id ?? "", source: props.source ?? "" };
+
+  console.warn("favorited book: ", data);
+  await favoritesStore.addBookToFavorites(data);
+}
+
+async function handleUnfavorite() {
+  const data = { profileId: profileId.value ?? "", bookId: props.id ?? "" };
+
+  console.warn("unfavorited book: ", data);
+  await favoritesStore.deleteBookFavorites(data);
+}
+
+watch(
+  () => authStore.user?.id,
+  async (id) => {
+    if (!id)
+      return;
+    await profileStore.fetchProfile(id);
+  },
+  { immediate: true },
+);
+
+watch(
+  profileId,
+  async (id) => {
+    if (!id)
+      return;
+    await favoritesStore.checkBookFavorites(props.id, id);
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -55,9 +100,16 @@ const props = defineProps<{
             <li><a v-if="props.downloadLinks?.mobi" :href="props.downloadLinks?.mobi" target="_blank" rel="noopener noreferrer">Download MOBI</a></li>
           </ul>
         </div>
-        <button class="btn btn-accent">
+        <button v-if="loading" class="btn btn-accent">
+          <span class="loading loading-spinner loading-md" />
+        </button>
+        <button v-else-if="!isFavorite" class="btn btn-accent" @click="handleFavorite">
           <Icon name="tabler:heart" size="24" />
           Save
+        </button>
+        <button v-else class="btn btn-accent" @click="handleUnfavorite">
+          <Icon name="tabler:heart-filled" size="24" />
+          Saved
         </button>
       </div>
     </div>

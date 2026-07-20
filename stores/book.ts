@@ -10,6 +10,8 @@ export const useBookStore = defineStore("books", () => {
   const bookDetails = ref<Book>();
   const bookDetailsLoading = ref(false);
   const HOMEPAGE_MAX_BOOKS = 6;
+  const profileFavoriteBooks = ref<Book[]>([]);
+  const profileFavoriteBooksLoading = ref(false);
 
   const subjects = [
     "Adventure",
@@ -113,6 +115,22 @@ export const useBookStore = defineStore("books", () => {
     }
   };
 
+  const fetchProfileFavoriteBooks = async (ids: string[]) => {
+    profileFavoriteBooksLoading.value = true;
+    try {
+      const response = await $fetch<{ source: string; data: Book[] }>("/api/book/profile", { method: "GET", query: { ids } });
+      profileFavoriteBooks.value = response.data;
+      return response;
+    }
+    catch (e) {
+      console.error("Failed to fetch book details for book ids: ", ids, " : ", e);
+      return bookDetails.value;
+    }
+    finally {
+      profileFavoriteBooksLoading.value = false;
+    }
+  };
+
   return {
     featuredBooks,
     subjectBooks,
@@ -123,9 +141,12 @@ export const useBookStore = defineStore("books", () => {
     subjectBookLoading,
     searchLoading,
     bookDetailsLoading,
+    profileFavoriteBooks,
+    profileFavoriteBooksLoading,
     HOMEPAGE_MAX_BOOKS,
     fetchFeaturedBooks,
     fetchSubjectBooks,
+    fetchProfileFavoriteBooks,
     searchBook,
     getBookDetails,
   };
