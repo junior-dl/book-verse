@@ -73,6 +73,39 @@ async function submit() {
   </div>
 
   <div v-else>
-    You are logged in!
+    <section class="hero min-h-screen bg-base-100">
+      <div class="hero-content text-center">
+        <div class="max-w-xl">
+          <div class="badge badge-soft badge-success badge-lg mb-4">
+            ✓ Signed In
+          </div>
+
+          <h1 class="text-5xl font-bold">
+            Welcome back!
+          </h1>
+
+          <p class="py-6 text-lg opacity-80">
+            You're signed in and ready to continue your reading journey.
+            Discover new books, manage your shelves, or see what the community is reading.
+          </p>
+
+          <div class="flex justify-center gap-4">
+            <NuxtLink
+              to="/"
+              class="btn btn-primary"
+            >
+              Explore Books
+            </NuxtLink>
+
+            <NuxtLink
+              to="/profile"
+              class="btn btn-outline"
+            >
+              View Profile
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>

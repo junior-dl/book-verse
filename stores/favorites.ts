@@ -3,7 +3,7 @@ import type { CreateFavoritesDTO, ValidateFavoritesDTO } from "~/shared/dto";
 
 export const useFavoritesStore = defineStore("favorites", () => {
   const isFavorite = ref(false);
-  const favoriteBooks = ref<Favorite[]>([]);
+  const favoriteBooks = ref<Favorite[] | undefined>([]);
   const loading = ref(false);
 
   const addBookToFavorites = async (data: CreateFavoritesDTO) => {

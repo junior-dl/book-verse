@@ -1,26 +1,22 @@
 import type { Book } from "#imports";
 
+import { BOOK_SUBJECTS, MAX_BOOKS_PER_PAGE } from "~/constants/book";
+
 export const useBookStore = defineStore("books", () => {
   const featuredBooks = ref<Book[]>([]);
   const featuredLoading = ref(false);
+
   const subjectBooks = ref<Record<string, Book[]>>({});
   const subjectBookLoading = ref(false);
+
   const searchedBooks = ref<Book[]>([]);
   const searchLoading = ref(false);
+
   const bookDetails = ref<Book>();
   const bookDetailsLoading = ref(false);
-  const HOMEPAGE_MAX_BOOKS = 6;
+
   const profileFavoriteBooks = ref<Book[]>([]);
   const profileFavoriteBooksLoading = ref(false);
-
-  const subjects = [
-    "Adventure",
-    "Fantasy",
-    "Fiction",
-    "Love",
-    "Mystery",
-    "Science Fiction",
-  ];
 
   const fetchFeaturedBooks = async () => {
     featuredLoading.value = true;
@@ -31,7 +27,7 @@ export const useBookStore = defineStore("books", () => {
       }>("api/book", {
         method: "GET",
         query: {
-          limit: HOMEPAGE_MAX_BOOKS - 1,
+          limit: MAX_BOOKS_PER_PAGE - 1,
         },
       });
       featuredBooks.value = books.data;
@@ -56,7 +52,7 @@ export const useBookStore = defineStore("books", () => {
         method: "GET",
         query: {
           subject,
-          limit: HOMEPAGE_MAX_BOOKS,
+          limit: MAX_BOOKS_PER_PAGE,
           randomized: true,
         },
       });
@@ -136,14 +132,14 @@ export const useBookStore = defineStore("books", () => {
     subjectBooks,
     searchedBooks,
     bookDetails,
-    subjects,
+    subjects: BOOK_SUBJECTS,
     featuredLoading,
     subjectBookLoading,
     searchLoading,
     bookDetailsLoading,
     profileFavoriteBooks,
     profileFavoriteBooksLoading,
-    HOMEPAGE_MAX_BOOKS,
+    HOMEPAGE_MAX_BOOKS: MAX_BOOKS_PER_PAGE,
     fetchFeaturedBooks,
     fetchSubjectBooks,
     fetchProfileFavoriteBooks,

@@ -4,3 +4,14 @@ const DEFAULT_BOOK_COVER
 export const BOOK = {
   DEFAULT_BOOK_COVER,
 } as const;
+
+export const MAX_BOOKS_PER_PAGE = 6;
+
+export const BOOK_SUBJECTS = [
+  "Adventure",
+  "Fantasy",
+  "Fiction",
+  "Love",
+  "Mystery",
+  "Science Fiction",
+];

@@ -29,7 +29,11 @@ watch(
     if (!favorites?.length)
       return;
 
-    const ids = favorites.map(f => f.bookId);
+    const ids = favorites.map((f) => {
+      if (f.bookId == null)
+        throw new Error ("Favorite book is missing bookId");
+      return f.bookId;
+    });
     await booksStore.fetchProfileFavoriteBooks(ids);
   },
 );

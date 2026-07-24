@@ -1,7 +1,7 @@
 export type Favorite = {
   id: string;
-  profileId: string;
-  bookId: string;
-  source: string;
-  createdAt: Date;
+  profileId: string | null | undefined;
+  bookId?: string | null;
+  source: string | null | undefined;
+  createdAt: string | null | undefined;
 };
