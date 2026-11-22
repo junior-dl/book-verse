@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import type { Book } from "~/shared/types";
+import type { HomeFeed } from "~/shared/types";
 
 const props = defineProps <{
-  books: Book[];
-  defaultCover: string;
+  books: HomeFeed["trending"];
   loading?: boolean;
 }>();
 
@@ -14,10 +13,8 @@ const carouselConfig = {
   wrapAround: true,
 };
 
-function openBook(bookId?: string) {
-  if (!bookId)
-    return;
-  router.push(`/book/${bookId}`);
+function openBook(slug: string) {
+  router.push(`/book/${slug}`);
 }
 </script>
 
@@ -40,11 +37,8 @@ function openBook(bookId?: string) {
         <Slide v-for="book in props.books" :key="book.id" class="w-full py-8 px-10">
           <div class="flex flex-row gap-5 w-full">
             <!-- Image -->
-            <div class="h-80 w-65 overflow-hidden bg-primary rounded-lg">
-              <img
-                :src="book.coverUrl ?? props.defaultCover" :alt="book.title"
-                class="w-full h-full object-contain"
-              >
+            <div class="h-80 w-56 shrink-0">
+              <BookCover :src="book.coverUrl" :title="book.title" :author="book.authors.map(a => a.name).join(', ')" size="lg" />
             </div>
             <!-- Left -->
             <div class="w-full flex flex-col gap-10">
@@ -59,19 +53,19 @@ function openBook(bookId?: string) {
                     {{ book.title }}
                   </h2>
                 </div>
-                <div>
-                  <p class="line-clamp-2">
-                    {{ book.summary[0] }}
-                  </p>
-                </div>
-                <div v-for="(author, index) in book.author" :key="index">
-                  {{ typeof author === 'string' ? author : author.name }}<span v-if="index < book.author.length - 1"> , </span>
+                <p v-if="book.description" class="line-clamp-3">
+                  {{ book.description }}
+                </p>
+                <div class="flex flex-wrap gap-1">
+                  <NuxtLink v-for="author in book.authors" :key="author.slug" :to="`/author/${author.slug}`" class="link link-hover">
+                    {{ author.name }}
+                  </NuxtLink>
                 </div>
               </div>
 
               <!-- Action Button -->
               <div class="card-actions">
-                <button class="btn btn-primary w-50" @click="openBook(book.id)">
+                <button class="btn btn-primary w-50" @click="openBook(book.slug)">
                   Read Now
                 </button>
               </div>

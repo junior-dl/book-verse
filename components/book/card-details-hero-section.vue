@@ -1,115 +1,100 @@
 <script lang="ts" setup>
-import type { Author, BookDownloadLinks } from "~/shared/types";
+import type { Book, BookFormat } from "~/shared/types";
 
-const props = defineProps<{
-  id: string;
-  coverUrl: string;
-  title?: string;
-  authors?: (string | Author)[];
-  downloadLinks?: BookDownloadLinks;
-  source?: string;
-}>();
+const props = defineProps<{ book: Book }>();
 
-const favoritesStore = useFavoritesStore();
-const profileStore = useProfileStore();
 const authStore = useAuthStore();
-
-const profile = computed(() => profileStore.profileDetails);
+const favoritesStore = useFavoritesStore();
 const isFavorite = computed(() => favoritesStore.isFavorite);
 const loading = computed(() => favoritesStore.loading);
 
-const profileId = computed(() => profile.value?.id);
+const FORMAT_LABELS: Record<string, string> = {
+  epub: "EPUB",
+  pdf: "PDF",
+  mobi: "Kindle (MOBI)",
+  azw3: "Kindle (AZW3)",
+  txt: "Plain text",
+  html: "Web page",
+  audio: "Audiobook",
+};
 
-async function handleFavorite() {
-  const data = { profileId: profileId.value ?? "", bookId: props.id ?? "", source: props.source ?? "" };
-
-  console.warn("favorited book: ", data);
-  await favoritesStore.addBookToFavorites(data);
-}
-
-async function handleUnfavorite() {
-  const data = { profileId: profileId.value ?? "", bookId: props.id ?? "" };
-
-  console.warn("unfavorited book: ", data);
-  await favoritesStore.deleteBookFavorites(data);
-}
+const readOnline = computed(() => props.book.formats.find(f => f.format === "html"));
+const downloads = computed<BookFormat[]>(() => props.book.formats.filter(f => f.format !== "html"));
 
 watch(
-  () => authStore.user?.id,
-  async (id) => {
-    if (!id)
-      return;
-    await profileStore.fetchProfile(id);
+  () => [authStore.user?.id, props.book.id] as const,
+  async ([userId, workId]) => {
+    if (userId && workId)
+      await favoritesStore.checkBookFavorites(workId);
   },
   { immediate: true },
 );
 
-watch(
-  profileId,
-  async (id) => {
-    if (!id)
-      return;
-    await favoritesStore.checkBookFavorites(props.id, id);
-  },
-  { immediate: true },
-);
+async function toggleFavorite() {
+  if (!authStore.user)
+    return navigateTo("/sign-in");
+  if (isFavorite.value)
+    await favoritesStore.deleteBookFavorites(props.book.id);
+  else
+    await favoritesStore.addBookToFavorites(props.book.id);
+}
 </script>
 
 <template>
-  <div class="card bg-base-300 contain m-5 p-5 shadow-sm flex flex-row">
-    <figure class="h-70 w-55 overflow-hidden bg-primary rounded-lg">
-      <img
-        :src="props?.coverUrl"
-        :alt="props?.title"
-        class="w-full h-full object-contain"
-      >
-    </figure>
-    <div class="card-body w-full flex flex-col justify-between">
-      <!-- Title -->
+  <div class="card bg-base-300 m-5 flex flex-col gap-6 p-5 shadow-sm md:flex-row">
+    <div class="h-72 w-48 shrink-0">
+      <BookCover :src="props.book.coverUrl" :title="props.book.title" :author="props.book.authors.map(a => a.name).join(', ')" size="lg" />
+    </div>
+
+    <div class="flex w-full flex-col justify-between gap-4">
       <div class="flex flex-col gap-2">
-        <h2 class="text-4xl font-extrabold">
-          {{ props?.title || "No Title" }}
-        </h2>
-        <!-- Author -->
-        <div v-if="props.authors" class="flex flex-row items-center">
+        <h1 class="text-4xl font-extrabold">
+          {{ props.book.title }}
+        </h1>
+        <p v-if="props.book.subtitle" class="text-xl opacity-80">
+          {{ props.book.subtitle }}
+        </p>
+        <div v-if="props.book.authors.length" class="flex flex-wrap items-center gap-1">
           <span>by</span>
-          <div v-for="(author, index) in props?.authors" :key="index">
-            <button class="btn btn-link text-secondary-content">
-              {{ typeof author === 'string' ? author : author.name }}
-            </button>
-            <span v-if="index < props.authors.length - 1"> , </span>
-          </div>
+          <NuxtLink
+            v-for="(author, i) in props.book.authors"
+            :key="author.slug"
+            :to="`/author/${author.slug}`"
+            class="link link-hover font-semibold"
+          >
+            {{ author.name }}<span v-if="i < props.book.authors.length - 1">,</span>
+          </NuxtLink>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span v-if="props.book.firstPublishedYear" class="badge badge-ghost">{{ props.book.firstPublishedYear }}</span>
+          <span v-if="props.book.isPublicDomain" class="badge badge-success">Free to read</span>
+          <span v-else class="badge badge-outline">In print — no free download</span>
         </div>
       </div>
 
-      <!-- Buttons -->
-      <div class="card-actions justify-start">
-        <a v-if="props.downloadLinks?.html" class="btn" :href="props.downloadLinks?.html" target="_blank" rel="noopener noreferrer">
-          Read Online
-        </a>
-        <a v-if="props.downloadLinks?.text" class="btn" :href="props.downloadLinks?.text" target="_blank" rel="noopener noreferrer">
-          Read as Plain Text
+      <div class="card-actions">
+        <a v-if="readOnline" class="btn btn-primary" :href="readOnline.url" target="_blank" rel="noopener noreferrer">
+          Read online
         </a>
 
-        <div class="dropdown dropdown-hover">
+        <div v-if="downloads.length" class="dropdown dropdown-hover">
           <div tabindex="0" role="button" class="btn">
-            Download
+            <Icon name="tabler:download" size="20" /> Download
           </div>
-          <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-            <li><a v-if="props.downloadLinks?.epub" :href="props.downloadLinks?.epub" target="_blank" rel="noopener noreferrer">Download EPUB</a></li>
-            <li><a v-if="props.downloadLinks?.mobi" :href="props.downloadLinks?.mobi" target="_blank" rel="noopener noreferrer">Download MOBI</a></li>
+          <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-10 w-64 p-2 shadow-sm">
+            <li v-for="f in downloads" :key="`${f.format}-${f.source}`">
+              <a :href="f.url" target="_blank" rel="noopener noreferrer">
+                {{ FORMAT_LABELS[f.format] ?? f.format }}
+                <span class="text-xs opacity-60">· {{ f.source }}</span>
+              </a>
+            </li>
           </ul>
         </div>
-        <button v-if="loading" class="btn btn-accent">
-          <span class="loading loading-spinner loading-md" />
-        </button>
-        <button v-else-if="!isFavorite" class="btn btn-accent" @click="handleFavorite">
-          <Icon name="tabler:heart" size="24" />
-          Save
-        </button>
-        <button v-else class="btn btn-accent" @click="handleUnfavorite">
-          <Icon name="tabler:heart-filled" size="24" />
-          Saved
+
+        <button class="btn btn-accent" :disabled="loading" @click="toggleFavorite">
+          <span v-if="loading" class="loading loading-spinner loading-sm" />
+          <Icon v-else :name="isFavorite ? 'tabler:heart-filled' : 'tabler:heart'" size="20" />
+          {{ isFavorite ? "Saved" : "Save" }}
         </button>
       </div>
     </div>

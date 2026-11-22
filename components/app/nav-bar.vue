@@ -8,15 +8,17 @@ const q = ref("");
 const router = useRouter();
 
 function search() {
-  router.push(`/search/${q.value}`);
+  if (q.value.trim())
+    router.push(`/search/${encodeURIComponent(q.value.trim())}`);
 }
 </script>
 
 <template>
   <div class="navbar bg-base-300 shadow-sm">
     <div class="flex-1">
-      <NuxtLink to="/" class="btn btn-ghost text-xl">
-        BookVerse
+      <NuxtLink to="/" class="btn btn-ghost h-auto gap-2 py-1 text-xl" aria-label="BookVerse home">
+        <AppLogoMark :size="36" />
+        <span class="tracking-wider" style="font-family: var(--title-font)">Book<span class="text-[#BFA15A]">Verse</span></span>
       </NuxtLink>
     </div>
     <div class="flex gap-2 items-center">

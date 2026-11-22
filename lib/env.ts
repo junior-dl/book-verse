@@ -9,6 +9,8 @@ const EnvSchema = z.object({
   BETTER_AUTH_URL: z.string(),
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
+  // Comma-separated emails allowed to open /admin (data health review)
+  ADMIN_EMAILS: z.string().optional().default(""),
 });
 
 export type EnvSchema = z.infer<typeof EnvSchema>;

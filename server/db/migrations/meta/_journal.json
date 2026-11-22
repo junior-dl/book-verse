@@ -92,6 +92,41 @@
       "when": 1784446992607,
       "tag": "0012_broken_virginia_dare",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1795310400000,
+      "tag": "0013_catalog_v2",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1795310460000,
+      "tag": "0014_merge_works",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1795310520000,
+      "tag": "0015_ingest_functions",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1795310580000,
+      "tag": "0016_no_author_drift",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1795310640000,
+      "tag": "0017_data_health",
+      "breakpoints": true
     }
   ]
 }

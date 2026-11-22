@@ -1,21 +1,13 @@
 <script lang="ts" setup>
-const props = defineProps<{
-  subjects?: string[];
-}>();
+import type { SubjectRef } from "~/shared/types";
 
-// Routing to that subject
-const router = useRouter();
-function routeToSubject(subject: string) {
-  router.push(`/subject/${encodeURIComponent(subject)}`);
-}
+const props = defineProps<{ subjects: SubjectRef[] }>();
 </script>
 
 <template>
-  <div class="card bg-base-300 contain m-5 p-5 shadow-sm flex flex-row gap-2">
-    <div v-for="(sub, i) in props.subjects" :key="i">
-      <button class="btn btn-soft border-primary-content" @click="routeToSubject(sub)">
-        {{ sub }}
-      </button>
-    </div>
+  <div v-if="props.subjects.length" class="card bg-base-300 m-5 flex flex-row flex-wrap gap-2 p-5 shadow-sm">
+    <NuxtLink v-for="s in props.subjects" :key="s.slug" :to="`/subject/${s.slug}`" class="btn btn-soft btn-sm border-primary-content">
+      {{ s.name }}
+    </NuxtLink>
   </div>
 </template>

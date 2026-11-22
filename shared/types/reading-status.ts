@@ -1,7 +1,7 @@
 export type ReadingStatus = {
   id: string;
   profileId: string;
-  bookId: string;
-  source: string;
+  workId: string;
+  status: "want_to_read" | "reading" | "finished" | "dropped";
   createdAt: string;
 };

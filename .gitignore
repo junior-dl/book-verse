@@ -25,3 +25,6 @@ logs
 
 # Database
 local.db*
+
+# Tasklist
+todo.md

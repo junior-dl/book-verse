@@ -1,11 +1,15 @@
+import type { BookCard } from "./book";
+
 export type Author = {
+  id: string;
+  slug: string;
   name: string;
-  birthYear: number | null; // TODO update in migration
+  birthYear: number | null;
   deathYear: number | null;
-  bio?: AuthorDescription | string;
+  bio: string | null;
+  photoUrl: string | null;
 };
 
-type AuthorDescription = {
-  type?: string;
-  value?: string;
+export type AuthorPage = Author & {
+  books: BookCard[];
 };

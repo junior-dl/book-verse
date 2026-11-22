@@ -153,11 +153,11 @@
     <!-- Meet the Developer -->
     <section class="hero py-24 bg-base-100">
       <div class="hero-content flex-col lg:flex-row gap-12">
-        <div class="avatar">
+        <!-- <div class="avatar">
           <div class="w-56 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4">
             <img src="/me.JPEG" alt="Developer">
           </div>
-        </div>
+        </div> -->
 
         <div class="max-w-xl">
           <div class="badge badge-accent mb-4">
@@ -165,11 +165,11 @@
           </div>
 
           <h2 class="text-4xl font-bold mb-6">
-            Hi, I'm Your Name 👋
+            Hi, I'm Justine 👋
           </h2>
 
           <p class="mb-4 opacity-80">
-            I'm a Computer Science student and full-stack developer passionate
+            I'm a Information Technology graduate and full-stack developer passionate
             about building practical web applications.
           </p>
 

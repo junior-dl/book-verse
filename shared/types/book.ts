@@ -1,28 +1,52 @@
-import type { Author } from "./author";
+export const BOOK_FORMATS = ["epub", "pdf", "mobi", "azw3", "txt", "html", "audio"] as const;
+export type BookFormatKind = (typeof BOOK_FORMATS)[number];
 
-export type Book = {
-  id?: string;
+export type AuthorRef = {
+  slug: string;
+  name: string;
+};
+
+export type SubjectRef = {
+  slug: string;
+  name: string;
+};
+
+export type BookFormat = {
+  format: BookFormatKind;
+  url: string;
+  source: string;
+};
+
+/** Lightweight shape used in grids, carousels and search results. */
+export type BookCard = {
+  id: string;
+  slug: string;
   title: string;
   coverUrl: string | null;
-  author: Author[] | string[];
-  source: string;
-  externalBookId: string;
-  sourceDownloadCount?: number;
-  downloadCount?: number;
-  summary: string[];
-  language: string[];
-  downloadLinks?: BookDownloadLinks;
-  subjects?: string[];
-  updatedAt?: Date;
+  isPublicDomain: boolean;
+  authors: AuthorRef[];
 };
 
-export type HomepageBook = Book & {
-  rating: number;
+/** Full shape for the book detail page. */
+export type Book = BookCard & {
+  subtitle: string | null;
+  description: string | null;
+  firstPublishedYear: number | null;
+  languages: string[];
+  popularity: number;
+  subjects: SubjectRef[];
+  formats: BookFormat[];
+  identifiers: { kind: string; value: string }[];
 };
 
-export type BookDownloadLinks = {
-  html?: string;
-  epub?: string;
-  mobi?: string;
-  text?: string;
+export type HomeFeed = {
+  trending: (BookCard & { description: string | null })[];
+  sections: (SubjectRef & { books: BookCard[] })[];
+};
+
+export type Paged<T> = {
+  items: T[];
+  page: number;
+  pageSize: number;
+  total: number;
 };

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="BookVerse">
+  <rect width="120" height="120" rx="27" fill="#0F172A"/>
+  <g transform="translate(9 9) scale(0.85)">
+  <ellipse cx="60" cy="62" rx="54" ry="17" transform="rotate(-14 60 62)" fill="none" stroke="#D6BC72" stroke-width="3.5" stroke-opacity="0.55"/>
+  <path d="M60 38 C51 30 36 28 22 32 L22 88 C36 84 51 86 60 94 Z" fill="#BFA15A"/>
+  <path d="M60 38 C69 30 84 28 98 32 L98 88 C84 84 69 86 60 94 Z" fill="#BFA15A" fill-opacity="0.82"/>
+  <path d="M60 38 L60 94" stroke="#0F172A" stroke-width="3" stroke-linecap="round"/>
+  <path d="M30 44 C38 42 46 43 52 46 M30 54 C38 52 46 53 52 56 M68 46 C74 43 82 42 90 44 M68 56 C74 53 82 52 90 54" fill="none" stroke="#0F172A" stroke-width="2.2" stroke-linecap="round" stroke-opacity="0.45"/>
+  <path d="M112.5 51.4 L111.5 54.0 L109.5 56.8 L106.6 59.7 L102.8 62.6 L98.1 65.5 L92.7 68.4 L86.7 71.1 L80.1 73.7 L73.1 76.0 L65.9 78.0 L58.6 79.8 L51.3 81.2 L44.2 82.2 L37.4 82.8 L31.0 83.0 L25.2 82.9 L20.0 82.3 L15.7 81.3 L12.2 79.9 L9.6 78.2 L8.7 77.2" fill="none" stroke="#D6BC72" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="106" cy="43" r="6" fill="#D6BC72"/>
+  <path d="M96 8 L98.2 15.8 L106 18 L98.2 20.2 L96 28 L93.8 20.2 L86 18 L93.8 15.8 Z" fill="#D6BC72"/>
+  </g>
+</svg>

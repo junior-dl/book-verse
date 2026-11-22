@@ -1,89 +1,54 @@
-import type { Favorite } from "#imports";
-import type { CreateFavoritesDTO, ValidateFavoritesDTO } from "~/shared/dto";
+import type { BookCard } from "~/shared/types";
 
 export const useFavoritesStore = defineStore("favorites", () => {
   const isFavorite = ref(false);
-  const favoriteBooks = ref<Favorite[] | undefined>([]);
+  const favoriteBooks = ref<BookCard[]>([]);
   const loading = ref(false);
 
-  const addBookToFavorites = async (data: CreateFavoritesDTO) => {
+  async function run<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
     loading.value = true;
     try {
-      const result = await $fetch<boolean>(`/api/favorites`, { method: "POST", body: data });
-      isFavorite.value = result;
-      return result;
+      return await fn();
     }
     catch (e) {
-      console.error("Failed to favorite book at store: ", e);
-      return isFavorite.value;
+      console.error("Favorites request failed:", e);
+      return fallback;
     }
     finally {
       loading.value = false;
     }
-  };
+  }
 
-  const checkBookFavorites = async (bookId: string, profileId: string) => {
-    loading.value = true;
-    try {
-      const result = await $fetch(`/api/favorites/book/`, { method: "GET", query: {
-        bookId,
-        profileId,
-      } });
-      isFavorite.value = (result?.length ?? 0) > 0;
-      return result;
-    }
-    catch (e) {
-      console.error("Failed to validate favorites: ", e);
-      return isFavorite.value;
-    }
-    finally {
-      loading.value = false;
-    }
-  };
+  const addBookToFavorites = (workId: string) => run(async () => {
+    await $fetch("/api/favorites", { method: "POST", body: { workId } });
+    isFavorite.value = true;
+    return true;
+  }, false);
 
-  const deleteBookFavorites = async (data: ValidateFavoritesDTO) => {
-    loading.value = true;
-    try {
-      const result = await $fetch("/api/favorites", { method: "DELETE", body: data });
+  const deleteBookFavorites = (workId: string) => run(async () => {
+    await $fetch("/api/favorites", { method: "DELETE", body: { workId } });
+    isFavorite.value = false;
+    return true;
+  }, false);
 
-      if (result) {
-        isFavorite.value = false;
-      }
+  const checkBookFavorites = (workId: string) => run(async () => {
+    const res = await $fetch<{ isFavorite: boolean }>("/api/favorites/book", { query: { workId } });
+    isFavorite.value = res.isFavorite;
+    return res.isFavorite;
+  }, false);
 
-      return result;
-    }
-    catch (e) {
-      console.error("Failed to delete favorites at store: ", e);
-      return isFavorite.value;
-    }
-    finally {
-      loading.value = false;
-    }
-  };
-
-  const fetchFavoriteBooksByProfile = async (profileId: string) => {
-    loading.value = true;
-    try {
-      const result = await $fetch(`/api/favorites/profile/${profileId}`, { method: "GET" });
-      favoriteBooks.value = result;
-      return result;
-    }
-    catch (e) {
-      console.error("Failed to fetch favorited books: ", e);
-      return favoriteBooks.value;
-    }
-    finally {
-      loading.value = false;
-    }
-  };
+  const fetchFavoriteBooksByProfile = (profileId: string) => run(async () => {
+    favoriteBooks.value = await $fetch<BookCard[]>(`/api/favorites/profile/${profileId}`);
+    return favoriteBooks.value;
+  }, [] as BookCard[]);
 
   return {
     isFavorite,
     favoriteBooks,
     loading,
     addBookToFavorites,
-    checkBookFavorites,
     deleteBookFavorites,
+    checkBookFavorites,
     fetchFavoriteBooksByProfile,
   };
 });

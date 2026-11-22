@@ -1,22 +1,8 @@
-import { getBookByIdUseCase } from "~/server/usecase/book/get-book-by-id.use-case";
+import { getBookUseCase } from "~/server/usecase/catalog/get-book.use-case";
 
-export default defineEventHandler(async (event) => {
-  try {
-    const params = getRouterParams(event);
-    const bookId = params.id;
-
-    if (!bookId) {
-      console.error("Book ID is required to get Book Details.");
-      return;
-    }
-
-    return await getBookByIdUseCase(bookId);
-  }
-  catch (e) {
-    console.error("Error at API endpoint: ", e);
-    throw createError({
-      statusCode: 500,
-      statusMessage: "Internal server error",
-    });
-  }
+export default defineEventHandler((event) => {
+  const id = getRouterParam(event, "id");
+  if (!id)
+    badRequest("Book ID is required");
+  return getBookUseCase(id!);
 });

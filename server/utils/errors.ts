@@ -7,7 +7,7 @@ export function notFound(message = "Not found") {
 
 export function badRequest(message = "Bad request") {
   throw createError({
-    statusCode: 40,
+    statusCode: 400,
     statusMessage: message,
   });
 }

@@ -3,8 +3,7 @@ import z from "zod";
 export const ReviewDTO = z.object ({
   id: z.uuid(),
   profileId: z.string(),
-  bookId: z.string(),
-  source: z.string(),
+  workId: z.uuid(),
   rating: z.number(),
   reviewText: z.string().optional(),
   createdAt: z.iso.datetime(),
@@ -13,8 +12,7 @@ export const ReviewDTO = z.object ({
 
 export const CreateReviewDTO = z.object ({
   profileId: z.string(),
-  bookId: z.string(),
-  source: z.string(),
+  workId: z.uuid(),
   rating: z.number(),
   reviewText: z.string().optional(),
 });

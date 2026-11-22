@@ -1,25 +1,10 @@
-import { searchBookUseCase } from "~/server/usecase/book/search-book.use-case";
+import { searchBooksUseCase } from "~/server/usecase/catalog/search-books.use-case";
 
-export default defineEventHandler(async (event) => {
-  try {
-    const query = getQuery(event).q as string;
-
-    if (!query) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: "Query is required",
-      });
-    }
-
-    const result = await searchBookUseCase(query);
-
-    return result;
-  }
-  catch (e) {
-    console.error("Error at API endpoint: ", e);
-    throw createError({
-      statusCode: 500,
-      statusMessage: "Internal server error",
-    });
-  }
+export default defineEventHandler((event) => {
+  const query = getQuery(event);
+  const q = String(query.q ?? "").trim();
+  if (!q)
+    badRequest("Query is required");
+  const { page, pageSize } = parsePaging(query);
+  return searchBooksUseCase(q, page, pageSize);
 });

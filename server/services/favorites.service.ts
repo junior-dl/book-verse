@@ -1,53 +1,44 @@
-import { and, eq } from "drizzle-orm";
-
-import type { CreateFavoritesDTO, ValidateFavoritesDTO } from "~/shared/dto";
+import { and, desc, eq } from "drizzle-orm";
 
 import db from "../db";
-import { favorites } from "../db/schema";
+import { favorites, profile } from "../db/schema";
+import { catalogService } from "./catalog.service";
 
-async function createFavorites(dto: CreateFavoritesDTO) {
-  const values = {
-    profileId: dto.profileId,
-    bookId: dto.bookId,
-    source: dto.source,
-  };
+async function getProfileIdForUser(authUserId: string) {
+  const [row] = await db.select({ id: profile.id }).from(profile).where(eq(profile.authUserId, authUserId));
+  return row?.id ?? null;
+}
 
-  await db
-    .insert(favorites)
-    .values(values);
-
+async function add(profileId: string, workId: string) {
+  await db.insert(favorites).values({ profileId, workId }).onConflictDoNothing();
   return true;
 }
 
-async function checkIfFavoriteByBookId(dto: ValidateFavoritesDTO) {
-  const result = await db
-    .select()
-    .from(favorites)
-    .where(and(eq(favorites.bookId, dto.bookId), eq(favorites.profileId, dto.profileId)));
-
-  return result;
-}
-
-async function deleteFavoritesById(dto: ValidateFavoritesDTO) {
-  await db
-    .delete(favorites)
-    .where(and(eq(favorites.bookId, dto.bookId), eq(favorites.profileId, dto.profileId)));
-
+async function remove(profileId: string, workId: string) {
+  await db.delete(favorites).where(and(eq(favorites.profileId, profileId), eq(favorites.workId, workId)));
   return true;
 }
 
-async function fetchFavoriteBooksByProfileId(profileId: string) {
-  const result = await db
-    .select()
+async function isFavorite(profileId: string, workId: string) {
+  const rows = await db
+    .select({ id: favorites.id })
     .from(favorites)
-    .where(eq(favorites.profileId, profileId));
-
-  return result;
+    .where(and(eq(favorites.profileId, profileId), eq(favorites.workId, workId)))
+    .limit(1);
+  return rows.length > 0;
 }
 
-export const favoritesService = {
-  createFavorites,
-  checkIfFavoriteByBookId,
-  deleteFavoritesById,
-  fetchFavoriteBooksByProfileId,
-};
+async function listBooks(profileId: string) {
+  const rows = await db
+    .select({ workId: favorites.workId })
+    .from(favorites)
+    .where(eq(favorites.profileId, profileId))
+    .orderBy(desc(favorites.createdAt));
+
+  const ids = rows.map(r => r.workId);
+  const books = await catalogService.getBooksByIds(ids);
+  const byId = new Map(books.map(b => [b.id, b]));
+  return ids.map(id => byId.get(id)).filter(b => b !== undefined);
+}
+
+export const favoritesService = { getProfileIdForUser, add, remove, isFavorite, listBooks };

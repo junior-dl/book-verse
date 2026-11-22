@@ -4,6 +4,7 @@ const protectedRoutes = [
   "/profile",
   "/shelf",
   "/settings",
+  "/admin",
 ];
 
 export default defineEventHandler(async (event) => {
