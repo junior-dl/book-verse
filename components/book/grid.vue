@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{
 </script>
 
 <template>
-  <div class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+  <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-6">
     <template v-if="props.loading">
       <div v-for="i in props.skeletons" :key="i" class="flex flex-col gap-3">
         <div class="skeleton aspect-[2/3] w-full" />

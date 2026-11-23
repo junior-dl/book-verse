@@ -12,8 +12,8 @@ async function submit() {
 </script>
 
 <template>
-  <div v-if="!authStore.user" class="w-full flex justify-center container mt-20">
-    <div class="card bg-base-300 w-1/4 m-5 p-5 shadow-sm flex flex-col gap-5">
+  <div v-if="!authStore.user" class="w-full flex justify-center px-2 mt-8 sm:mt-20">
+    <div class="card bg-base-300 w-full max-w-md m-4 p-5 sm:m-5 shadow-sm flex flex-col gap-5">
       <div class="w-full flex flex-col items-center">
         <h1 class="font-extrabold text-2xl">
           Welcome back

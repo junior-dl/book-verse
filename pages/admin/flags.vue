@@ -7,15 +7,15 @@ const scanning = ref(false);
 const message = ref("");
 
 const LABELS: Record<DataFlag["kind"], { title: string; hint: string }> = {
-  many_authors: { title: "3+ authors", hint: "Often an anthology or a compilation that merged in." },
+  many_authors: { title: "3+ authors", hint: "Often a compilation merged in. Remove the authors who don't belong, or dismiss if it's a real anthology." },
   author_after_pub: { title: "Author born after publication", hint: "That author almost certainly doesn't belong on this book." },
   possible_duplicate: { title: "Possible duplicate", hint: "Same author, near-identical titles, still two books." },
 };
 
-async function resolve(flag: DataFlag, action: FlagAction) {
+async function resolve(flag: DataFlag, action: FlagAction, authorId?: string) {
   busy.value = flag.id;
   try {
-    await $fetch(`/api/admin/flags/${flag.id}`, { method: "PATCH", body: { action } });
+    await $fetch(`/api/admin/flags/${flag.id}`, { method: "PATCH", body: { action, authorId } });
     await refresh();
   }
   finally {
@@ -85,6 +85,18 @@ useHead({ title: "Data health · BookVerse" });
           <p class="text-sm opacity-60">
             {{ LABELS[flag.kind].hint }}
           </p>
+          <!-- 3+ authors: pick who doesn't belong -->
+          <ul v-if="flag.kind === 'many_authors'" class="flex flex-col gap-1 pt-1">
+            <li v-for="a in flag.workAuthors" :key="a.id" class="flex items-center justify-between gap-3 rounded-box bg-base-100 px-3 py-1.5">
+              <NuxtLink :to="`/author/${a.slug}`" class="link link-hover truncate">
+                {{ a.name }}
+              </NuxtLink>
+              <button class="btn btn-xs btn-error btn-outline shrink-0" :disabled="busy === flag.id" @click="resolve(flag, 'remove_author', a.id)">
+                Remove
+              </button>
+            </li>
+          </ul>
+
           <div class="flex flex-wrap gap-2 pt-1">
             <button v-if="flag.author" class="btn btn-sm btn-error" :disabled="busy === flag.id" @click="resolve(flag, 'remove_author')">
               Remove {{ flag.author.name }} from this book

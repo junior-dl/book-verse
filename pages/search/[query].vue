@@ -19,7 +19,7 @@ function goTo(p: number) {
 
 <template>
   <div class="flex flex-col gap-5 p-5">
-    <div class="flex flex-row justify-between">
+    <div class="flex flex-row flex-wrap justify-between gap-2">
       <p>Search for: <span class="font-bold">{{ query }}</span></p>
       <p>Results: {{ data?.total ?? 0 }}</p>
     </div>

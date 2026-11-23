@@ -20,7 +20,7 @@ function goTo(p: number) {
 
 <template>
   <div class="flex flex-col gap-5 p-5">
-    <div class="flex flex-row items-end justify-between">
+    <div class="flex flex-row flex-wrap items-end justify-between gap-2">
       <h1 class="text-3xl font-bold">
         {{ data?.subject.name ?? slug }}
       </h1>

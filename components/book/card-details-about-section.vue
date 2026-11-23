@@ -3,7 +3,7 @@ const props = defineProps<{ description?: string | null }>();
 </script>
 
 <template>
-  <div v-if="props.description" class="card bg-base-300 m-5 p-5 shadow-sm">
+  <div v-if="props.description" class="card bg-base-300 m-3 sm:m-5 p-4 sm:p-5 shadow-sm">
     <h2 class="mb-2 text-xl font-bold">
       About this book
     </h2>

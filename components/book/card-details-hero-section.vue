@@ -41,14 +41,14 @@ async function toggleFavorite() {
 </script>
 
 <template>
-  <div class="card bg-base-300 m-5 flex flex-col gap-6 p-5 shadow-sm md:flex-row">
-    <div class="h-72 w-48 shrink-0">
+  <div class="card bg-base-300 m-3 flex flex-col gap-6 p-4 shadow-sm sm:m-5 sm:p-5 md:flex-row">
+    <div class="h-72 w-48 shrink-0 self-center md:self-start">
       <BookCover :src="props.book.coverUrl" :title="props.book.title" :author="props.book.authors.map(a => a.name).join(', ')" size="lg" />
     </div>
 
     <div class="flex w-full flex-col justify-between gap-4">
       <div class="flex flex-col gap-2">
-        <h1 class="text-4xl font-extrabold">
+        <h1 class="break-words text-3xl font-extrabold sm:text-4xl">
           {{ props.book.title }}
         </h1>
         <p v-if="props.book.subtitle" class="text-xl opacity-80">
@@ -90,6 +90,8 @@ async function toggleFavorite() {
             </li>
           </ul>
         </div>
+
+        <BookAddToShelf :work-id="props.book.id" />
 
         <button class="btn btn-accent" :disabled="loading" @click="toggleFavorite">
           <span v-if="loading" class="loading loading-spinner loading-sm" />

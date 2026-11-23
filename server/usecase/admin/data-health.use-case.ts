@@ -4,7 +4,10 @@ import z from "zod";
 
 import { healthService } from "~/server/services/health.service";
 
-const ResolveSchema = z.object({ action: z.enum(["dismiss", "remove_author", "merge"]) });
+const ResolveSchema = z.object({
+  action: z.enum(["dismiss", "remove_author", "merge"]),
+  authorId: z.uuid().optional(),
+});
 
 export async function listFlagsUseCase(event: H3Event) {
   await requireAdmin(event);
@@ -13,8 +16,8 @@ export async function listFlagsUseCase(event: H3Event) {
 
 export async function resolveFlagUseCase(event: H3Event, id: number, body: unknown) {
   await requireAdmin(event);
-  const { action } = validate(ResolveSchema, body);
-  const result = await healthService.resolve(id, action);
+  const { action, authorId } = validate(ResolveSchema, body);
+  const result = await healthService.resolve(id, action, authorId);
   if (!result.ok)
     badRequest(result.reason);
   return result;

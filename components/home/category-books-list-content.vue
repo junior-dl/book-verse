@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="mx-4">
+  <div class="mx-3 sm:mx-4">
     <template v-if="props.loading">
       <div v-for="i in 3" :key="i" class="mb-10">
         <div class="skeleton my-5 h-10 w-48" />
@@ -18,7 +18,7 @@ const props = defineProps<{
 
     <section v-for="section in props.sections" v-else :key="section.slug" class="mb-10">
       <div class="my-5 flex items-end justify-between">
-        <h2 class="text-3xl font-bold">
+        <h2 class="text-2xl font-bold sm:text-3xl">
           {{ section.name }}
         </h2>
         <NuxtLink :to="`/subject/${section.slug}`" class="link link-hover">

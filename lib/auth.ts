@@ -11,6 +11,10 @@ export const auth = betterAuth({
   }),
   baseURL: env.BETTER_AUTH_URL,
   emailAndPassword: { enabled: true },
+  session: {
+    // Signed session cookie for 5 minutes: getSession() skips the database on most requests.
+    cookieCache: { enabled: true, maxAge: 5 * 60 },
+  },
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID as string,

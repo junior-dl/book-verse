@@ -7,6 +7,7 @@ export type DataFlag = {
   detail: string;
   createdAt: string;
   work: { id: string; slug: string; title: string };
+  workAuthors: { id: string; slug: string; name: string }[];
   author: { id: string; slug: string; name: string } | null;
   otherWork: { id: string; slug: string; title: string } | null;
 };

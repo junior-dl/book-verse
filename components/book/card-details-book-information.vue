@@ -17,11 +17,11 @@ const sources = computed(() => [...new Set(props.book.formats.map(f => f.source)
 </script>
 
 <template>
-  <div class="card bg-base-300 m-5 p-5 shadow-sm">
-    <table class="table">
+  <div class="card bg-base-300 m-3 overflow-x-auto p-3 shadow-sm sm:m-5 sm:p-5">
+    <table class="table table-sm sm:table-md">
       <tbody>
         <tr>
-          <td class="w-48 font-semibold">
+          <td class="w-28 font-semibold sm:w-48">
             Authors
           </td>
           <td>{{ props.book.authors.map(a => a.name).join(", ") || "Unknown" }}</td>
@@ -42,7 +42,9 @@ const sources = computed(() => [...new Set(props.book.formats.map(f => f.source)
           <td class="font-semibold">
             {{ ID_LABELS[id.kind] ?? id.kind }}
           </td>
-          <td>{{ id.value }}</td>
+          <td class="break-all">
+            {{ id.value }}
+          </td>
         </tr>
       </tbody>
     </table>

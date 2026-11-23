@@ -18,7 +18,7 @@ useHead(() => ({ title: author.value ? `${author.value.name} · BookVerse` : "Bo
   <div class="flex flex-col gap-6 p-5">
     <BookEmptyState v-if="error" title="Author not found" />
     <template v-else-if="author">
-      <div class="card bg-base-300 flex flex-col gap-6 p-6 shadow-sm md:flex-row">
+      <div class="card bg-base-300 flex flex-col items-center gap-6 p-5 text-center shadow-sm md:flex-row md:items-start md:text-left">
         <div class="avatar">
           <div class="w-36 rounded-xl bg-base-100">
             <img v-if="author.photoUrl" :src="author.photoUrl" :alt="author.name">
@@ -26,7 +26,7 @@ useHead(() => ({ title: author.value ? `${author.value.name} · BookVerse` : "Bo
           </div>
         </div>
         <div class="flex flex-col gap-2">
-          <h1 class="text-4xl font-extrabold">
+          <h1 class="break-words text-3xl font-extrabold sm:text-4xl">
             {{ author.name }}
           </h1>
           <p v-if="lifespan" class="opacity-70">

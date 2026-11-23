@@ -214,10 +214,13 @@ async function getBooksByIds(ids: string[]): Promise<BookCard[]> {
   if (ids.length === 0)
     return [];
 
+  // Pass each id as its own parameter: an array interpolated into sql`` expands to ($1, $2, …),
+  // which is not a valid uuid[] literal and made every favorites request fail.
+  const idList = sql.join(ids.map(id => sql`${id}::uuid`), sql`, `);
   return rows<BookCard>(sql`
     SELECT ${cardColumns}
     FROM works w
-    WHERE w.id = ANY(${ids}::uuid[])
+    WHERE w.id IN (${idList})
   `);
 }
 

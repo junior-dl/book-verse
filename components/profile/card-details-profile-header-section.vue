@@ -16,21 +16,21 @@ function getDefaultAvatar() {
 <template>
   <div class="card bg-base-200 contain m-5 p-5 shadow-sm flex flex-col gap-2">
     <!-- Edit Button -->
-    <button class="btn btn-primary absolute top-5 right-5 flex items-center gap-2" onclick="edit_profile_modal.showModal()">
+    <button class="btn btn-primary btn-sm order-last self-center sm:absolute sm:top-5 sm:right-5 sm:order-none sm:btn-md" onclick="edit_profile_modal.showModal()">
       <Icon name="tabler:pencil" size="18" /> Edit Profile
     </button>
 
     <!-- Profile Details -->
-    <div class="flex flex-row gap-5">
+    <div class="flex flex-col items-center gap-5 text-center sm:flex-row sm:items-start sm:pr-36 sm:text-left">
       <!-- Avatar -->
       <div class="avatar">
-        <div class="w-30 rounded-full">
+        <div class="w-24 rounded-full sm:w-30">
           <img :src="props.profile?.avatarUrl ?? getDefaultAvatar()">
         </div>
       </div>
-      <div class="flex flex-col gap-2">
+      <div class="flex min-w-0 flex-col gap-2">
         <!-- Name -->
-        <h1 class="font-extrabold text-4xl">
+        <h1 class="break-words text-3xl font-extrabold sm:text-4xl">
           {{ props.profile?.name }}
         </h1>
 

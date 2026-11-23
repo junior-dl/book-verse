@@ -8,6 +8,10 @@ async function listOpen(): Promise<DataFlag[]> {
   const result = await db.execute(sql`
     SELECT f.id::int AS id, f.kind, f.detail, f.created_at AS "createdAt",
       json_build_object('id', w.id, 'slug', w.slug, 'title', w.title) AS work,
+      coalesce((
+        SELECT json_agg(json_build_object('id', a2.id, 'slug', a2.slug, 'name', a2.name) ORDER BY wa.position)
+        FROM work_authors wa JOIN authors a2 ON a2.id = wa.author_id WHERE wa.work_id = w.id
+      ), '[]'::json) AS "workAuthors",
       CASE WHEN a.id IS NULL THEN NULL ELSE json_build_object('id', a.id, 'slug', a.slug, 'name', a.name) END AS author,
       CASE WHEN o.id IS NULL THEN NULL ELSE json_build_object('id', o.id, 'slug', o.slug, 'title', o.title) END AS "otherWork"
     FROM data_flags f
@@ -24,10 +28,10 @@ async function listOpen(): Promise<DataFlag[]> {
 /**
  * Resolve one flag. Every action is something a person chose; nothing here runs automatically.
  * - dismiss: the data is fine, stop flagging it
- * - remove_author: unlink the flagged author from the book
+ * - remove_author: unlink the flagged author (or, for a 3+ author flag, the author picked) from the book
  * - merge: merge the two flagged books into the more popular one
  */
-async function resolve(id: number, action: FlagAction) {
+async function resolve(id: number, action: FlagAction, authorId?: string) {
   const [flag] = (await db.execute(sql`
     SELECT kind, work_id AS "workId", author_id AS "authorId", other_work_id AS "otherWorkId"
     FROM data_flags WHERE id = ${id} AND status = 'open'
@@ -37,9 +41,22 @@ async function resolve(id: number, action: FlagAction) {
     return { ok: false, reason: "Flag not found or already resolved" };
 
   if (action === "remove_author") {
-    if (!flag.authorId)
-      return { ok: false, reason: "This flag has no author to remove" };
-    await db.execute(sql`DELETE FROM work_authors WHERE work_id = ${flag.workId} AND author_id = ${flag.authorId}`);
+    const target = flag.authorId ?? authorId;
+    if (!target)
+      return { ok: false, reason: "Pick which author to remove" };
+
+    const removed = await db.execute(sql`
+      DELETE FROM work_authors WHERE work_id = ${flag.workId} AND author_id = ${target} RETURNING 1
+    `);
+    if (removed.rows.length === 0)
+      return { ok: false, reason: "That author is not on this book" };
+
+    // A 3+ author flag stays open until the book is under 3 authors, so several can be removed.
+    if (flag.kind === "many_authors") {
+      const [row] = (await db.execute(sql`SELECT count(*)::int AS n FROM work_authors WHERE work_id = ${flag.workId}`)).rows as { n: number }[];
+      if ((row?.n ?? 0) >= 3)
+        return { ok: true, stillOpen: true };
+    }
   }
 
   if (action === "merge") {

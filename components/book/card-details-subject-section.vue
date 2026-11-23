@@ -5,7 +5,7 @@ const props = defineProps<{ subjects: SubjectRef[] }>();
 </script>
 
 <template>
-  <div v-if="props.subjects.length" class="card bg-base-300 m-5 flex flex-row flex-wrap gap-2 p-5 shadow-sm">
+  <div v-if="props.subjects.length" class="card bg-base-300 m-3 sm:m-5 flex flex-row flex-wrap gap-2 p-4 sm:p-5 shadow-sm">
     <NuxtLink v-for="s in props.subjects" :key="s.slug" :to="`/subject/${s.slug}`" class="btn btn-soft btn-sm border-primary-content">
       {{ s.name }}
     </NuxtLink>

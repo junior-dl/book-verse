@@ -1,25 +1,16 @@
 import z from "zod";
 
-export const ShelfDTO = z.object ({
-  id: z.string(),
-  profileId: z.string(),
-  name: z.string(),
-  description: z.string().optional(),
-  isPublic: z.boolean(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
+export const CreateShelfDTOSchema = z.object({
+  name: z.string().trim().min(1, "Give the shelf a name").max(60),
+  description: z.string().trim().max(300).optional().nullable(),
+  isPublic: z.boolean().optional().default(false),
 });
 
-export const CreateShelfDTO = z.object ({
-  profileId: z.string(),
-  name: z.string(),
-  description: z.string().optional(),
-  isPublic: z.boolean().default(false),
+export const UpdateShelfDTOSchema = CreateShelfDTOSchema.partial();
+
+export const ShelfBookDTOSchema = z.object({
+  workId: z.uuid(),
 });
 
-export const UpdateShelfDTO = z.object ({
-  name: z.string(),
-  description: z.string().optional(),
-  isPublic: z.boolean(),
-  updatedAt: z.iso.datetime(),
-});
+export type CreateShelfDTO = z.infer<typeof CreateShelfDTOSchema>;
+export type UpdateShelfDTO = z.infer<typeof UpdateShelfDTOSchema>;

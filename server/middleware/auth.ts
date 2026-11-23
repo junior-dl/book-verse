@@ -2,7 +2,6 @@ import { auth } from "~/lib/auth";
 
 const protectedRoutes = [
   "/profile",
-  "/shelf",
   "/settings",
   "/admin",
 ];

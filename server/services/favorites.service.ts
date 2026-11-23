@@ -4,8 +4,20 @@ import db from "../db";
 import { favorites, profile } from "../db/schema";
 import { catalogService } from "./catalog.service";
 
+// A user's profile id never changes, so remember it instead of querying on every request.
+const profileIdCache = new Map<string, string>();
+
 async function getProfileIdForUser(authUserId: string) {
+  const cached = profileIdCache.get(authUserId);
+  if (cached)
+    return cached;
+
   const [row] = await db.select({ id: profile.id }).from(profile).where(eq(profile.authUserId, authUserId));
+  if (row?.id) {
+    if (profileIdCache.size > 5000)
+      profileIdCache.clear();
+    profileIdCache.set(authUserId, row.id);
+  }
   return row?.id ?? null;
 }
 

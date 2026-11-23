@@ -31,11 +31,18 @@ export const useFavoritesStore = defineStore("favorites", () => {
     return true;
   }, false);
 
-  const checkBookFavorites = (workId: string) => run(async () => {
-    const res = await $fetch<{ isFavorite: boolean }>("/api/favorites/book", { query: { workId } });
-    isFavorite.value = res.isFavorite;
-    return res.isFavorite;
-  }, false);
+  // Background check: no global loading state, so the Save button stays usable.
+  async function checkBookFavorites(workId: string) {
+    try {
+      const res = await $fetch<{ isFavorite: boolean }>("/api/favorites/book", { query: { workId } });
+      isFavorite.value = res.isFavorite;
+      return res.isFavorite;
+    }
+    catch (e) {
+      console.error("Favorites check failed:", e);
+      return false;
+    }
+  }
 
   const fetchFavoriteBooksByProfile = (profileId: string) => run(async () => {
     favoriteBooks.value = await $fetch<BookCard[]>(`/api/favorites/profile/${profileId}`);
